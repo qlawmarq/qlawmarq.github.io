@@ -1,13 +1,18 @@
 {
   "name": "svelte-portfolio",
+  "description": "An example of a portfolio site created with Svelte",
   "version": "0.0.1",
+  "private": true,
   "homepage": "https://qlawmarq.github.io",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/qlawmarq/qlawmarq.github.io.git"
+  },
+  "author": "Masaki Yoshiiwa <masaki.yoshiiwa@gmail> (https://github.com/qlawmarq/)",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "playwright": "playwright test",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -27,7 +32,6 @@
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-svelte3": "^4.0.0",
-    "gh-pages": "^5.0.0",
     "prettier": "^2.8.0",
     "prettier-plugin-svelte": "^2.8.1",
     "svelte": "^3.54.0",

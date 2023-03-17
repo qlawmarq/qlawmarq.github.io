@@ -11,8 +11,8 @@
 </script>
 
 <svelte:head>
-  <title>Home</title>
-  <meta name="description" content="Svelte demo app" />
+  <title>HOME - qlawmarq.github.io</title>
+  <meta name="description" content="A portfolio site created with Svelte" />
 </svelte:head>
 
 <section>
