@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import isbot from "isbot";
   export let text: string;
   export let factor: number = 5;
   export let delay: number = 0;
@@ -7,15 +8,20 @@
   export let minMilsec: number = 20;
   export let onFinish: () => void = () => {};
   const randamString = "______!<>-\\/[]{}—=+*^?#";
-  let output = "";
+  let output = text;
   let counter = -1;
   onMount(() => {
+    // If user is bot, then skip glitching
+    if (isbot(navigator.userAgent)) {
+      return;
+    }
+    output = "";
     delay = delay ? delay : 0;
     setTimeout(() => {
       for (let i = 0; i < text.length + factor; i++) {
         output += getRandamString();
       }
-      glicth();
+      glitch();
     }, delay);
   });
 
@@ -23,7 +29,7 @@
     return randamString.charAt(Math.floor(Math.random() * randamString.length));
   };
 
-  const glicth = () => {
+  const glitch = () => {
     setTimeout(() => {
       counter++;
       if (counter < text.length) {
@@ -39,7 +45,7 @@
         }
         cipherChars[counter] = text[counter];
         output = cipherChars.join("");
-        glicth();
+        glitch();
       }
     }, Math.floor(Math.random() * (maxMilsec - minMilsec) + minMilsec));
   };

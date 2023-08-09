@@ -3,11 +3,10 @@
 </script>
 
 <header>
-  <header>
-    <div class="header__border">
-      <img src={line} alt="line" />
-    </div>
-  </header>
+  <div class="header__main" />
+  <div class="header__border">
+    <img src={line} alt="line" />
+  </div>
 </header>
 
 <style>
@@ -21,7 +20,9 @@
     flex-direction: column;
     width: 100%;
   }
-
+  .header__main {
+    margin: auto;
+  }
   .header__border {
     position: absolute;
     bottom: 0;
