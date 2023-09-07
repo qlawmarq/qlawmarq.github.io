@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { afterUpdate, onDestroy, onMount } from "svelte";
   import isbot from "isbot";
   export let text: string;
   export let factor: number = 5;
@@ -11,6 +11,10 @@
   let output = text;
   let counter = -1;
   onMount(() => {
+    renderGlitchText();
+  });
+
+  const renderGlitchText = () => {
     // If user is bot, then skip glitching
     if (isbot(navigator.userAgent)) {
       return;
@@ -23,7 +27,7 @@
       }
       glitch();
     }, delay);
-  });
+  };
 
   const getRandamString = () => {
     return randamString.charAt(Math.floor(Math.random() * randamString.length));
