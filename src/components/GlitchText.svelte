@@ -7,10 +7,13 @@
   export let onFinish: () => void = () => {};
   const randamString = "______!<>-\\/[]{}—=+*^?#";
   let output = text;
+  let isFinished = false;
+  let isStarted = false;
   let counter = -1;
   $: renderGlitchText();
 
   const renderGlitchText = () => {
+    isStarted = true;
     output = "";
     delay = delay ? delay : 0;
     setTimeout(() => {
@@ -26,6 +29,7 @@
   };
 
   const glitch = () => {
+    isFinished = false;
     setTimeout(() => {
       counter++;
       if (counter < text.length) {
@@ -42,9 +46,11 @@
         cipherChars[counter] = text[counter];
         output = cipherChars.join("");
         glitch();
+      } else {
+        isFinished = true;
       }
     }, Math.floor(Math.random() * (maxMilsec - minMilsec) + minMilsec));
   };
 </script>
 
-{output}
+{isStarted ? output : text}

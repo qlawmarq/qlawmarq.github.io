@@ -21,7 +21,6 @@ const config = {
       precompress: false,
       strict: true,
     }),
-    inlineStyleThreshold: Infinity,
   },
 };
 
