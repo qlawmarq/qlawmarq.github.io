@@ -21,11 +21,23 @@
 </script>
 
 <svelte:head>
-  <title>Profile - {$LL.name() || "Masaki Yoshiiwa"} (@qlawmarq)</title>
+  <title>Profile - {$LL.name() || "Masaki Yoshiiwa"}</title>
+  <meta name="title" content="Profile - {$LL.name() || 'Masaki Yoshiiwa'} " />
   <meta
     name="description"
-    content="GitHub Profile Page of Masaki Yoshiiwa (@qlawmarq), a software developer who loves new technologies."
+    content="GitHub Profile Page of Masaki Yoshiiwa , a software developer who loves new technologies."
   />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://qlawmarq.github.io/" />
+  <meta
+    property="og:title"
+    content="Profile - {$LL.name() || 'Masaki Yoshiiwa'} "
+  />
+  <meta
+    property="og:description"
+    content="GitHub Profile Page of Masaki Yoshiiwa , a software developer who loves new technologies."
+  />
+  <meta property="og:image" content="https://qlawmarq.github.io/icon.png" />
 </svelte:head>
 
 <section>
