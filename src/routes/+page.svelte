@@ -10,7 +10,6 @@
   import isbot from "isbot";
   import LL, { locale } from "../i18n/i18n-svelte";
   let isTextFinished: boolean = true;
-  $: console.log($locale);
   onMount(() => {
     // If user is bot, then skip glitching list elements.
     if (isbot(navigator.userAgent)) {
