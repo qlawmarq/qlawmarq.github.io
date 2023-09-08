@@ -4,11 +4,9 @@
   import "./reset.css";
   import "./layout.css";
   import { onMount } from "svelte";
-  import { locale, setLocale } from "../i18n/i18n-svelte";
-  import { detectLocale, isLocale, locales } from "../i18n/i18n-util";
-  import { initLocalStorageDetector } from "typesafe-i18n/detectors";
-  import { loadAllLocales, loadLocale } from "../i18n/i18n-util.sync";
-  initLocalStorageDetector("key");
+  import { setLocale } from "../i18n/i18n-svelte";
+  import { isLocale } from "../i18n/i18n-util";
+  import { loadAllLocales } from "../i18n/i18n-util.sync";
   setLocale("en");
   loadAllLocales();
 
@@ -17,11 +15,13 @@
     return navigator.language;
   };
 
-  onMount(async () => {
+  onMount(() => {
     const detectedLocale = getLocaleFromBrowser();
     if (isLocale(detectedLocale)) {
       setLocale(detectedLocale);
       document.querySelector("html")!.setAttribute("lang", detectedLocale);
+    } else {
+      setLocale("en");
     }
   });
 </script>

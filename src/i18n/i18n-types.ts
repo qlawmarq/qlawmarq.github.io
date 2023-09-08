@@ -16,7 +16,7 @@ export type Translations = RootTranslation;
 
 type RootTranslation = {
   /**
-   * H​e​l​l​o
+   * H​e​l​l​o​ ​W​o​r​l​d
    */
   hello: string;
   /**
@@ -39,7 +39,7 @@ type RootTranslation = {
 
 export type TranslationFunctions = {
   /**
-   * Hello
+   * Hello World
    */
   hello: () => LocalizedString;
   /**

@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { afterUpdate, onDestroy, onMount } from "svelte";
-  import isbot from "isbot";
   export let text: string;
   export let factor: number = 5;
   export let delay: number = 0;
@@ -10,15 +8,9 @@
   const randamString = "______!<>-\\/[]{}—=+*^?#";
   let output = text;
   let counter = -1;
-  onMount(() => {
-    renderGlitchText();
-  });
+  $: renderGlitchText();
 
   const renderGlitchText = () => {
-    // If user is bot, then skip glitching
-    if (isbot(navigator.userAgent)) {
-      return;
-    }
     output = "";
     delay = delay ? delay : 0;
     setTimeout(() => {

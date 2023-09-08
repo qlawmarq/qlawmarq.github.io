@@ -1,14 +1,10 @@
 <script lang="ts">
   import line from "$lib/images/line.svg";
-  import { onMount } from "svelte";
   import { isLocale, locales } from "../i18n/i18n-util";
   import Select from "./Form/Select.svelte";
   import { locale, setLocale } from "../i18n/i18n-svelte";
   let localeOptions = locales.map((l) => {
     return { value: l, text: l.toLocaleUpperCase() };
-  });
-  onMount(() => {
-    console.log($locale);
   });
   const onChange = (e: Event) => {
     const value = (e.target as HTMLSelectElement).value;

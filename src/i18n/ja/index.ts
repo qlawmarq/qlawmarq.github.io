@@ -1,7 +1,7 @@
 import type { Translation } from "../i18n-types";
 
 const ja = {
-  hello: `Hello`,
+  hello: `Hello World`,
   name: `吉岩 正樹`,
   job: `ソフトウェアエンジニア、ウェブやモバイルアプリのフロントエンド開発、サーバーサイド API の開発などが主な仕事`,
   introduce: `新しい技術や社会課題を解決する技術に興味を持つ`,
