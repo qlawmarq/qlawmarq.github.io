@@ -5,7 +5,7 @@ const en = {
   name: `Masaki Yoshiiwa`,
   job: `Software developer, full stack developer, love front-end development.`,
   introduce: `Passionate about solving interesting problems, and finding new technologies to learn.`,
-  rejumeUrl: `https://github.com/qlawmarq/rejume/blob/master/MasakiYoshiiwa_rejume.pdf`,
+  resumeUrl: `https://github.com/qlawmarq/resume/blob/master/MasakiYoshiiwa_resume.pdf`,
 } satisfies BaseTranslation;
 
 export default en;
