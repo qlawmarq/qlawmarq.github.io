@@ -34,7 +34,7 @@ type RootTranslation = {
   /**
    * h​t​t​p​s​:​/​/​g​i​t​h​u​b​.​c​o​m​/​q​l​a​w​m​a​r​q​/​r​e​j​u​m​e​/​b​l​o​b​/​m​a​s​t​e​r​/​M​a​s​a​k​i​Y​o​s​h​i​i​w​a​_​r​e​j​u​m​e​.​p​d​f
    */
-  rejumeUrl: string;
+  resumeUrl: string;
 };
 
 export type TranslationFunctions = {
@@ -55,9 +55,9 @@ export type TranslationFunctions = {
    */
   introduce: () => LocalizedString;
   /**
-   * https://github.com/qlawmarq/rejume/blob/master/MasakiYoshiiwa_rejume.pdf
+   * https://github.com/qlawmarq/resume/blob/master/MasakiYoshiiwa_resume.pdf
    */
-  rejumeUrl: () => LocalizedString;
+  resumeUrl: () => LocalizedString;
 };
 
 export type Formatters = {};

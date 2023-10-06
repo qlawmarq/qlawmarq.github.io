@@ -6,10 +6,27 @@
 
 Make sure Node.js is installed on your machine.
 
+To set up a local development environment, do the following:
+
 ```bash
 npm i
 npm run dev
 ```
+
+To run an E2E test with Playwright Test, do the following:
+
+```bash
+npx playwright install
+npm run e2e:test
+```
+
+To update [snapshots](https://playwright.dev/docs/test-snapshots), do the following:
+
+```bash
+npm run e2e:update
+```
+
+See [Playwright Docs](https://playwright.dev/docs/intro) for more details.
 
 ## Deployment
 

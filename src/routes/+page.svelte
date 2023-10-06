@@ -92,11 +92,11 @@
           </ListItem>
           <ListItem>
             <Anchor
-              href={$LL.rejumeUrl()}
+              href={$LL.resumeUrl()}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <GlitchText text={"Rejume"} factor={8} delay={200} />
+              <GlitchText text={"Resume"} factor={8} delay={200} />
             </Anchor>
           </ListItem>
         </UnorderedList>
