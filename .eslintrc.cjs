@@ -22,6 +22,10 @@ module.exports = {
       },
     },
   ],
+  rules: {
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"],
+  },
   parserOptions: {
     sourceType: "module",
     ecmaVersion: 2020,

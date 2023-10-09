@@ -46,7 +46,7 @@ export const i18nObject = (locale: Locales): TranslationFunctions =>
   initI18nObject<Locales, Translations, TranslationFunctions, Formatters>(
     locale,
     loadedLocales[locale],
-    loadedFormatters[locale]
+    loadedFormatters[locale],
   );
 
 export const i18n = (): LocaleTranslationFunctions<
@@ -56,7 +56,7 @@ export const i18n = (): LocaleTranslationFunctions<
 > =>
   initI18n<Locales, Translations, TranslationFunctions, Formatters>(
     loadedLocales,
-    loadedFormatters
+    loadedFormatters,
   );
 
 export const detectLocale = (...detectors: LocaleDetector[]): Locales =>

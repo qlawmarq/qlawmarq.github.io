@@ -1,12 +1,10 @@
 /* This will render after reset.css has rendered */
 
 html,
-body {
+body,
+:root {
   height: 100%;
   overflow: hidden;
-}
-
-:root {
   font-family: helvetica, sans-serif;
   letter-spacing: 0.03rem;
   font-weight: lighter;
@@ -19,9 +17,14 @@ body {
       rgba(204, 200, 177, 0) 1px
     ),
     linear-gradient(to bottom, #ccc8b1 1px, rgba(204, 200, 177, 0) 1px);
-  box-shadow: inset 0 0 150px rgba(77, 73, 62, 0.4),
+  box-shadow:
+    inset 0 0 150px rgba(77, 73, 62, 0.4),
     inset 0 0 150px rgba(77, 73, 62, 0.3);
   min-height: 100vh;
+  overflow: auto;
+}
+.app {
+  overflow: scroll;
 }
 ::-webkit-scrollbar {
   width: 6px;

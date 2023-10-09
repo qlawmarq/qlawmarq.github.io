@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import Content from "../components/Content.svelte";
+  import Card from "../components/Card.svelte";
   import GlitchText from "../components/GlitchText.svelte";
   import ListItem from "../components/List/ListItem.svelte";
   import UnorderedList from "../components/List/UnorderedList.svelte";
@@ -9,15 +9,45 @@
   import Paragraph from "../components/Typography/Paragraph.svelte";
   import isbot from "isbot";
   import LL, { locale } from "../i18n/i18n-svelte";
+  import ky from "ky";
+  import type { GitHubRepo } from "../types/github";
+  import H2 from "../components/Typography/H2.svelte";
+
   let isTextFinished: boolean = true;
+  let ownedRepos: GitHubRepo[] = [];
+
   onMount(() => {
+    checkUserAgent();
+    fettchData();
+  });
+
+  const checkUserAgent = () => {
     // If user is bot, then skip glitching list elements.
     if (isbot(navigator.userAgent)) {
       isTextFinished = true;
     } else {
       isTextFinished = false;
     }
-  });
+  };
+
+  // Fetch own repo datas in GitHub from GitHub API
+  const fettchData = async () => {
+    const allRepos: GitHubRepo[] = await ky
+      .get("https://api.github.com/users/qlawmarq/repos", {
+        searchParams: new URLSearchParams({
+          type: "public",
+          sort: "updated",
+          per_page: "50",
+        }),
+      })
+      .json();
+    ownedRepos = allRepos.filter(
+      (repo) =>
+        repo.fork === false &&
+        repo.description !== null &&
+        repo.description !== "",
+    );
+  };
 </script>
 
 <svelte:head>
@@ -46,62 +76,88 @@
   </H1>
 
   {#key $locale}
-    <Content>
+    <Card>
+      <H2>About</H2>
       <Paragraph>
         Name:
         <GlitchText text={$LL.name()} factor={2} delay={300} />
       </Paragraph>
       <Paragraph>
         Job:
-        <GlitchText text={$LL.job()} factor={0} delay={800} maxMilsec={80} />
+        <GlitchText text={$LL.job()} factor={0} delay={600} maxMilsec={80} />
       </Paragraph>
       <Paragraph>
-        Introduce:
+        Bio:
         <GlitchText
           text={$LL.introduce()}
           factor={0}
-          delay={1600}
-          maxMilsec={70}
+          delay={1200}
+          maxMilsec={50}
           onFinish={() => (isTextFinished = true)}
         />
       </Paragraph>
-      {#if isTextFinished}
-        <UnorderedList>
+    </Card>
+    <Card>
+      <H2>Contacts</H2>
+      <UnorderedList>
+        <ListItem>
+          <Anchor
+            href={"https://github.com/qlawmarq"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <GlitchText text={"GitHub"} factor={8} delay={300} />
+          </Anchor>
+        </ListItem>
+        <ListItem>
+          <Anchor
+            href={"https://www.linkedin.com/in/qlawmarq/"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <GlitchText text={"LinkdIn"} factor={8} delay={400} />
+          </Anchor>
+        </ListItem>
+        <ListItem>
+          <Anchor href="mailto:masaki.yoshiiwa@gmail.com">
+            <GlitchText text={"Email"} factor={8} delay={500} />
+          </Anchor>
+        </ListItem>
+        <ListItem>
+          <Anchor
+            href={$LL.resumeUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <GlitchText text={"Resume"} factor={8} delay={600} />
+          </Anchor>
+        </ListItem>
+      </UnorderedList>
+    </Card>
+    <!-- show for each ownedRepos below -->
+    <Card>
+      <H2>Own GitHub Repositories</H2>
+      <UnorderedList>
+        {#each ownedRepos as repo}
           <ListItem>
             <Anchor
-              href={"https://github.com/qlawmarq"}
+              href={repo.html_url}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <GlitchText text={"GitHub"} factor={8} delay={100} />
+              <GlitchText text={repo.name} factor={0} delay={0} />
             </Anchor>
+            : <GlitchText
+              text={repo.description}
+              factor={0}
+              delay={50}
+              maxMilsec={40}
+              minMilsec={10}
+            />
           </ListItem>
-          <ListItem>
-            <Anchor
-              href={"https://www.linkedin.com/in/qlawmarq/"}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <GlitchText text={"LinkdIn"} factor={8} delay={200} />
-            </Anchor>
-          </ListItem>
-          <ListItem>
-            <Anchor href="mailto:masaki.yoshiiwa@gmail.com">
-              <GlitchText text={"Email"} factor={8} delay={100} />
-            </Anchor>
-          </ListItem>
-          <ListItem>
-            <Anchor
-              href={$LL.resumeUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <GlitchText text={"Resume"} factor={8} delay={200} />
-            </Anchor>
-          </ListItem>
-        </UnorderedList>
-      {/if}
-    </Content>
+        {/each}
+      </UnorderedList>
+    </Card>
   {/key}
 </section>
 
