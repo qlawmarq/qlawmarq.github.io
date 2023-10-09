@@ -10,5 +10,6 @@
   ul {
     list-style-type: square;
     padding-left: 1.5rem;
+    margin: 1rem 0;
   }
 </style>
