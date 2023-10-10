@@ -10,6 +10,7 @@
   h2 {
     font-size: 1.5rem;
     padding: 0.1rem 1rem;
+    margin-bottom: 0.5rem;
     font-weight: lighter;
     border: solid #454138;
     border-width: 0.1rem 0;

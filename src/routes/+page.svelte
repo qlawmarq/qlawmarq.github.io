@@ -12,6 +12,7 @@
   import ky from "ky";
   import type { GitHubRepo } from "../types/github";
   import H2 from "../components/Typography/H2.svelte";
+  import Badge from "../components/Badge.svelte";
 
   let isTextFinished: boolean = true;
   let ownedRepos: GitHubRepo[] = [];
@@ -41,12 +42,22 @@
         }),
       })
       .json();
-    ownedRepos = allRepos.filter(
-      (repo) =>
-        repo.fork === false &&
-        repo.description !== null &&
-        repo.description !== "",
-    );
+    ownedRepos = allRepos
+      .filter(
+        (repo) =>
+          repo.fork === false &&
+          repo.description !== null &&
+          repo.description !== "",
+      )
+      .sort((a, b) => {
+        if (a.stargazers_count > b.stargazers_count) {
+          return -1;
+        } else if (a.stargazers_count < b.stargazers_count) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
   };
 </script>
 
@@ -55,7 +66,7 @@
   <meta name="title" content="Profile - {$LL.name() || 'Masaki Yoshiiwa'} " />
   <meta
     name="description"
-    content="GitHub Profile Page of Masaki Yoshiiwa , a software developer who loves new technologies."
+    content="GitHub Profile Page of Masaki Yoshiiwa, a software developer who loves new technologies."
   />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://qlawmarq.github.io/" />
@@ -65,7 +76,7 @@
   />
   <meta
     property="og:description"
-    content="GitHub Profile Page of Masaki Yoshiiwa , a software developer who loves new technologies."
+    content="GitHub Profile Page of Masaki Yoshiiwa, a software developer who loves new technologies."
   />
   <meta property="og:image" content="https://qlawmarq.github.io/icon.png" />
 </svelte:head>
@@ -78,24 +89,43 @@
   {#key $locale}
     <Card>
       <H2>About</H2>
-      <Paragraph>
-        Name:
-        <GlitchText text={$LL.name()} factor={2} delay={300} />
-      </Paragraph>
-      <Paragraph>
-        Job:
-        <GlitchText text={$LL.job()} factor={0} delay={600} maxMilsec={80} />
-      </Paragraph>
-      <Paragraph>
-        Bio:
-        <GlitchText
-          text={$LL.introduce()}
-          factor={0}
-          delay={1200}
-          maxMilsec={50}
-          onFinish={() => (isTextFinished = true)}
-        />
-      </Paragraph>
+      <UnorderedList>
+        <ListItem>
+          Name:
+          <GlitchText text={$LL.name()} factor={2} delay={100} />
+        </ListItem>
+        <ListItem>
+          Job:
+          <GlitchText text={$LL.job()} factor={0} delay={200} maxMilsec={40} />
+        </ListItem>
+        <ListItem>
+          Bio:
+          <GlitchText
+            text={$LL.introduce()}
+            factor={0}
+            delay={300}
+            maxMilsec={30}
+            onFinish={() => (isTextFinished = true)}
+          />
+        </ListItem>
+        <ListItem>
+          Tech Skills:
+          <Badge>TypeScript</Badge>
+          <Badge>JavaScript</Badge>
+          <Badge>Python</Badge>
+          <Badge>React.js</Badge>
+          <Badge>React Native</Badge>
+          <Badge>Vue</Badge>
+          <Badge>Docker</Badge>
+          <Badge>K8S</Badge>
+          <Badge>HTML/CSS</Badge>
+          <Badge>SQL</Badge>
+          <Badge>Figma</Badge>
+          <Badge>CI/CD</Badge>
+          <Badge>GCP</Badge>
+          <Badge>AWS</Badge>
+        </ListItem>
+      </UnorderedList>
     </Card>
     <Card>
       <H2>Contacts</H2>
@@ -115,12 +145,12 @@
             target="_blank"
             rel="noopener noreferrer"
           >
-            <GlitchText text={"LinkdIn"} factor={8} delay={400} />
+            <GlitchText text={"LinkdIn"} factor={8} delay={500} />
           </Anchor>
         </ListItem>
         <ListItem>
           <Anchor href="mailto:masaki.yoshiiwa@gmail.com">
-            <GlitchText text={"Email"} factor={8} delay={500} />
+            <GlitchText text={"Email"} factor={8} delay={700} />
           </Anchor>
         </ListItem>
         <ListItem>
@@ -129,35 +159,35 @@
             target="_blank"
             rel="noopener noreferrer"
           >
-            <GlitchText text={"Resume"} factor={8} delay={600} />
+            <GlitchText text={"Resume"} factor={8} delay={900} />
           </Anchor>
         </ListItem>
       </UnorderedList>
     </Card>
-    <!-- show for each ownedRepos below -->
-    <Card>
-      <H2>Own GitHub Repositories</H2>
-      <UnorderedList>
-        {#each ownedRepos as repo}
-          <ListItem>
-            <Anchor
-              href={repo.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <GlitchText text={repo.name} factor={0} delay={0} />
-            </Anchor>
-            : <GlitchText
-              text={repo.description}
-              factor={0}
-              delay={50}
-              maxMilsec={40}
-              minMilsec={10}
-            />
-          </ListItem>
-        {/each}
-      </UnorderedList>
-    </Card>
+    {#if ownedRepos.length > 0}
+      <Card>
+        <H2>Own GitHub Repositories</H2>
+        <UnorderedList>
+          {#each ownedRepos as repo}
+            <ListItem>
+              <Anchor
+                href={repo.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {repo.name}
+              </Anchor>
+              <Badge>
+                {repo.language}
+              </Badge>
+              <Paragraph>
+                {repo.description}
+              </Paragraph>
+            </ListItem>
+          {/each}
+        </UnorderedList>
+      </Card>
+    {/if}
   {/key}
 </section>
 
