@@ -47,7 +47,7 @@ export type TranslationFunctions = {
    */
   name: () => LocalizedString;
   /**
-   * Software developer, full stack developer, love front-end development.
+   * Software developer, full stack developer
    */
   job: () => LocalizedString;
   /**
@@ -55,7 +55,7 @@ export type TranslationFunctions = {
    */
   introduce: () => LocalizedString;
   /**
-   * https://github.com/qlawmarq/resume/blob/master/MasakiYoshiiwa_resume.pdf
+   * https://github.com/qlawmarq/resume/blob/master/MasakiYoshiiwa_Resume.pdf
    */
   resumeUrl: () => LocalizedString;
 };
