@@ -1,10 +1,8 @@
 /* This will render after reset.css has rendered */
 
-html,
-body,
-:root {
+body {
   height: 100%;
-  overflow: hidden;
+  width: 100%;
   font-family: helvetica, sans-serif;
   letter-spacing: 0.03rem;
   font-weight: lighter;
@@ -21,10 +19,8 @@ body,
     inset 0 0 150px rgba(77, 73, 62, 0.4),
     inset 0 0 150px rgba(77, 73, 62, 0.3);
   min-height: 100vh;
-  overflow: auto;
-}
-.app {
-  overflow: scroll;
+  scroll-behavior: smooth;
+  overscroll-behavior-y: none;
 }
 ::-webkit-scrollbar {
   width: 6px;
