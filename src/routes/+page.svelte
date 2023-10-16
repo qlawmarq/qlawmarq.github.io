@@ -7,32 +7,24 @@
   import Anchor from "../components/Typography/Anchor.svelte";
   import H1 from "../components/Typography/H1.svelte";
   import Paragraph from "../components/Typography/Paragraph.svelte";
-  import isbot from "isbot";
   import LL, { locale } from "../i18n/i18n-svelte";
   import ky from "ky";
   import type { GitHubRepo } from "../types/github";
   import H2 from "../components/Typography/H2.svelte";
   import Badge from "../components/Badge.svelte";
+  import Star from "$lib/images/star.svg";
+  import Span from "../components/Typography/Span.svelte";
 
-  let isTextFinished: boolean = true;
   let ownedRepos: GitHubRepo[] = [];
+  let starredRepos: GitHubRepo[] = [];
 
   onMount(() => {
-    checkUserAgent();
-    fettchData();
+    fetchOwnRepos();
+    fetchRecentStaredRepos();
   });
 
-  const checkUserAgent = () => {
-    // If user is bot, then skip glitching list elements.
-    if (isbot(navigator.userAgent)) {
-      isTextFinished = true;
-    } else {
-      isTextFinished = false;
-    }
-  };
-
   // Fetch own repo datas in GitHub from GitHub API
-  const fettchData = async () => {
+  const fetchOwnRepos = async () => {
     const allRepos: GitHubRepo[] = await ky
       .get("https://api.github.com/users/qlawmarq/repos", {
         searchParams: new URLSearchParams({
@@ -47,7 +39,8 @@
         (repo) =>
           repo.fork === false &&
           repo.description !== null &&
-          repo.description !== "",
+          repo.description !== "" &&
+          repo.stargazers_count > 1,
       )
       .sort((a, b) => {
         if (a.stargazers_count > b.stargazers_count) {
@@ -58,6 +51,18 @@
           return 0;
         }
       });
+  };
+
+  // Fetch own repo datas in GitHub from GitHub API
+  const fetchRecentStaredRepos = async () => {
+    const allRepos: GitHubRepo[] = await ky
+      .get("https://api.github.com/users/qlawmarq/starred", {
+        searchParams: new URLSearchParams({
+          per_page: "8",
+        }),
+      })
+      .json();
+    starredRepos = allRepos;
   };
 </script>
 
@@ -83,7 +88,7 @@
 
 <section>
   <H1>
-    <GlitchText text={$LL.hello()} factor={4} minMilsec={30} />
+    <GlitchText text={$LL.hello()} factor={2} minMilsec={55} />
   </H1>
 
   {#key $locale}
@@ -92,7 +97,7 @@
       <UnorderedList>
         <ListItem>
           Name:
-          <GlitchText text={$LL.name()} factor={2} delay={100} />
+          <GlitchText text={$LL.name()} factor={2} delay={100} minMilsec={45} />
         </ListItem>
         <ListItem>
           Job:
@@ -105,7 +110,6 @@
             factor={0}
             delay={300}
             maxMilsec={30}
-            onFinish={() => (isTextFinished = true)}
           />
         </ListItem>
         <ListItem>
@@ -136,7 +140,7 @@
             target="_blank"
             rel="noopener noreferrer"
           >
-            <GlitchText text={"GitHub"} factor={8} delay={300} />
+            <GlitchText text={"GitHub"} factor={8} delay={400} />
           </Anchor>
         </ListItem>
         <ListItem>
@@ -145,12 +149,12 @@
             target="_blank"
             rel="noopener noreferrer"
           >
-            <GlitchText text={"LinkdIn"} factor={8} delay={500} />
+            <GlitchText text={"LinkdIn"} factor={8} delay={600} />
           </Anchor>
         </ListItem>
         <ListItem>
           <Anchor href="mailto:masaki.yoshiiwa@gmail.com">
-            <GlitchText text={"Email"} factor={8} delay={700} />
+            <GlitchText text={"Email"} factor={8} delay={800} />
           </Anchor>
         </ListItem>
         <ListItem>
@@ -159,16 +163,40 @@
             target="_blank"
             rel="noopener noreferrer"
           >
-            <GlitchText text={"Resume"} factor={8} delay={900} />
+            <GlitchText text={"Resume"} factor={8} delay={1000} />
           </Anchor>
         </ListItem>
       </UnorderedList>
     </Card>
     {#if ownedRepos.length > 0}
       <Card>
-        <H2>Own GitHub Repositories</H2>
+        <H2>Own GitHub Projects</H2>
         <UnorderedList>
           {#each ownedRepos as repo}
+            <ListItem>
+              <Anchor
+                href={repo.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {repo.name}
+              </Anchor>
+              <Badge>
+                {repo.language}
+              </Badge>
+              <Paragraph>
+                {repo.description}
+              </Paragraph>
+            </ListItem>
+          {/each}
+        </UnorderedList>
+      </Card>
+    {/if}
+    {#if starredRepos.length > 0}
+      <Card>
+        <H2>Recently Interested GitHub Projects</H2>
+        <UnorderedList>
+          {#each starredRepos as repo}
             <ListItem>
               <Anchor
                 href={repo.html_url}
