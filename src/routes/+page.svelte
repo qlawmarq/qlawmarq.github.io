@@ -21,10 +21,8 @@
   let starredRepos: GitHubRepo[] = [];
 
   onMount(() => {
-    // fetchOwnRepos();
-    // fetchRecentStaredRepos();
-    starredRepos = starredReposJSON as unknown as GitHubRepo[];
-    ownedRepos = ownedReposJSON as unknown as GitHubRepo[];
+    fetchOwnRepos();
+    fetchRecentStaredRepos();
   });
 
   // Fetch own repo datas in GitHub from GitHub API
