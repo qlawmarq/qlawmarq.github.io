@@ -250,6 +250,30 @@
         </Anchor>
       </Card>
     {/if}
+    {#if starredRepos.length > 0}
+      <Card>
+        <H2>Recently Interested GitHub Projects</H2>
+        <UnorderedList>
+          {#each starredRepos as repo}
+            <ListItem>
+              <Anchor
+                href={repo.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {repo.name}
+              </Anchor>
+              <Badge>
+                {repo.language}
+              </Badge>
+              <Paragraph>
+                {repo.description}
+              </Paragraph>
+            </ListItem>
+          {/each}
+        </UnorderedList>
+      </Card>
+    {/if}
   {/key}
 </section>
 
