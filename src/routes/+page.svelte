@@ -14,6 +14,8 @@
   import Badge from "../components/Badge.svelte";
   import Star from "$lib/images/star.svg";
   import Span from "../components/Typography/Span.svelte";
+  import ownedReposJSON from "../lib/json/ownedRepos.json";
+  import starredReposJSON from "../lib/json/starredRepos.json";
 
   let ownedRepos: GitHubRepo[] = [];
   let starredRepos: GitHubRepo[] = [];
@@ -25,44 +27,52 @@
 
   // Fetch own repo datas in GitHub from GitHub API
   const fetchOwnRepos = async () => {
-    const allRepos: GitHubRepo[] = await ky
-      .get("https://api.github.com/users/qlawmarq/repos", {
-        searchParams: new URLSearchParams({
-          type: "public",
-          sort: "updated",
-          per_page: "50",
-        }),
-      })
-      .json();
-    ownedRepos = allRepos
-      .filter(
-        (repo) =>
-          repo.fork === false &&
-          repo.description !== null &&
-          repo.description !== "" &&
-          repo.stargazers_count > 1,
-      )
-      .sort((a, b) => {
-        if (a.stargazers_count > b.stargazers_count) {
-          return -1;
-        } else if (a.stargazers_count < b.stargazers_count) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
+    try {
+      const allRepos = await ky
+        .get("https://api.github.com/users/qlawmarq/repos", {
+          searchParams: new URLSearchParams({
+            type: "public",
+            sort: "updated",
+            per_page: "50",
+          }),
+        })
+        .json<GitHubRepo[]>();
+      ownedRepos = allRepos
+        .filter(
+          (repo) =>
+            repo.fork === false &&
+            repo.description !== null &&
+            repo.description !== "" &&
+            repo.stargazers_count > 1,
+        )
+        .sort((a, b) => {
+          if (a.stargazers_count > b.stargazers_count) {
+            return -1;
+          } else if (a.stargazers_count < b.stargazers_count) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
+    } catch (error) {
+      ownedRepos = ownedReposJSON as unknown as GitHubRepo[];
+    }
   };
 
   // Fetch own repo datas in GitHub from GitHub API
   const fetchRecentStaredRepos = async () => {
-    const allRepos: GitHubRepo[] = await ky
-      .get("https://api.github.com/users/qlawmarq/starred", {
-        searchParams: new URLSearchParams({
-          per_page: "8",
-        }),
-      })
-      .json();
-    starredRepos = allRepos;
+    try {
+      const allRepos = await ky
+        .get("https://api.github.com/users/qlawmarq/starred", {
+          searchParams: new URLSearchParams({
+            per_page: "8",
+          }),
+        })
+        .json<GitHubRepo[]>();
+      starredRepos = allRepos;
+    } catch (error) {
+      starredRepos = starredReposJSON as unknown as GitHubRepo[];
+    }
   };
 </script>
 
@@ -182,14 +192,25 @@
                 {repo.name}
               </Anchor>
               <Badge>
-                {repo.language}
+                {repo.language || "Other"}
               </Badge>
+              <Span style={"display: inline-flex;"}>
+                <img src={Star} alt="Star" height="12" width="12" />
+                {repo.stargazers_count}
+              </Span>
               <Paragraph>
                 {repo.description}
               </Paragraph>
             </ListItem>
           {/each}
         </UnorderedList>
+        <Anchor
+          href="https://github.com/qlawmarq?tab=repositories"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Span>Click here to check all projects on GitHub...</Span>
+        </Anchor>
       </Card>
     {/if}
     {#if starredRepos.length > 0}
@@ -206,14 +227,27 @@
                 {repo.name}
               </Anchor>
               <Badge>
-                {repo.language}
+                {repo.language || "Other"}
               </Badge>
+              <Span style={"display: inline-flex;"}>
+                <img src={Star} alt="Star" height="12" width="12" />
+                {repo.stargazers_count}
+              </Span>
               <Paragraph>
                 {repo.description}
               </Paragraph>
             </ListItem>
           {/each}
         </UnorderedList>
+        <Anchor
+          href="https://github.com/qlawmarq?tab=stars"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Span>
+            Click here to check all recently interested projects on GitHub...
+          </Span>
+        </Anchor>
       </Card>
     {/if}
   {/key}
