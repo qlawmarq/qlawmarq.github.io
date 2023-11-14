@@ -55,7 +55,23 @@
           }
         });
     } catch (error) {
-      ownedRepos = ownedReposJSON as unknown as GitHubRepo[];
+      ownedRepos = ownedReposJSON
+        .filter(
+          (repo) =>
+            repo.fork === false &&
+            repo.description !== null &&
+            repo.description !== "" &&
+            repo.stargazers_count > 1,
+        )
+        .sort((a, b) => {
+          if (a.stargazers_count > b.stargazers_count) {
+            return -1;
+          } else if (a.stargazers_count < b.stargazers_count) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }) as unknown as GitHubRepo[];
     }
   };
 
@@ -197,6 +213,17 @@
               <Span style={"display: inline-flex;"}>
                 <img src={Star} alt="Star" height="12" width="12" />
                 {repo.stargazers_count}
+                {#if repo.homepage}
+                  <Span style={"display: inline-flex; margin-left: 0.5rem;"}>
+                    <Anchor
+                      href={repo.homepage}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Homepage
+                    </Anchor>
+                  </Span>
+                {/if}
               </Span>
               <Paragraph>
                 {repo.description}
@@ -232,6 +259,17 @@
               <Span style={"display: inline-flex;"}>
                 <img src={Star} alt="Star" height="12" width="12" />
                 {repo.stargazers_count}
+                {#if repo.homepage}
+                  <Span style={"display: inline-flex; margin-left: 0.5rem;"}>
+                    <Anchor
+                      href={repo.homepage}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Homepage
+                    </Anchor>
+                  </Span>
+                {/if}
               </Span>
               <Paragraph>
                 {repo.description}
@@ -239,15 +277,15 @@
             </ListItem>
           {/each}
         </UnorderedList>
-        <Anchor
-          href="https://github.com/qlawmarq?tab=stars"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Span>
+        <Span>
+          <Anchor
+            href="https://github.com/qlawmarq?tab=stars"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Click here to check all recently interested projects on GitHub...
-          </Span>
-        </Anchor>
+          </Anchor>
+        </Span>
       </Card>
     {/if}
   {/key}

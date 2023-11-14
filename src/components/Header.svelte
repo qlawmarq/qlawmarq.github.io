@@ -21,6 +21,8 @@
     <div />
     <div>
       <Select
+        id="locale"
+        name="locale"
         options={localeOptions}
         value={$locale}
         onchange={(e) => onChange(e)}
