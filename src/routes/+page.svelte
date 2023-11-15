@@ -21,9 +21,34 @@
   let starredRepos: GitHubRepo[] = [];
 
   onMount(() => {
-    fetchOwnRepos();
-    fetchRecentStaredRepos();
+    if (process.env.NODE_ENV === "development") {
+      loadRepos();
+    } else {
+      fetchOwnRepos();
+      fetchRecentStaredRepos();
+    }
   });
+
+  const loadRepos = () => {
+    ownedRepos = ownedReposJSON
+      .filter(
+        (repo) =>
+          repo.fork === false &&
+          repo.description !== null &&
+          repo.description !== "" &&
+          repo.stargazers_count > 1,
+      )
+      .sort((a, b) => {
+        if (a.stargazers_count > b.stargazers_count) {
+          return -1;
+        } else if (a.stargazers_count < b.stargazers_count) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }) as unknown as GitHubRepo[];
+    starredRepos = starredReposJSON as unknown as GitHubRepo[];
+  };
 
   // Fetch own repo datas in GitHub from GitHub API
   const fetchOwnRepos = async () => {
@@ -97,7 +122,7 @@
   <meta name="title" content="Profile - {$LL.name() || 'Masaki Yoshiiwa'} " />
   <meta
     name="description"
-    content="GitHub Profile Page of Masaki Yoshiiwa, a software developer who loves new technologies."
+    content="GitHub Profile Page of Masaki Yoshiiwa, software engineer, web developer, and mobile app developer."
   />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://qlawmarq.github.io/" />
@@ -107,7 +132,7 @@
   />
   <meta
     property="og:description"
-    content="GitHub Profile Page of Masaki Yoshiiwa, a software developer who loves new technologies."
+    content="GitHub Profile Page of Masaki Yoshiiwa, software engineer, web developer, and mobile app developer."
   />
   <meta property="og:image" content="https://qlawmarq.github.io/icon.png" />
 </svelte:head>

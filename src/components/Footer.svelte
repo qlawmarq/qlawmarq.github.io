@@ -1,13 +1,11 @@
 <script>
-  import line from "$lib/images/line.svg";
+  import Border from "./Border.svelte";
   import Anchor from "./Typography/Anchor.svelte";
   import Span from "./Typography/Span.svelte";
 </script>
 
 <footer>
-  <div class="footer__border">
-    <img src={line} alt="line" />
-  </div>
+  <Border />
   <div class="footer__main">
     <Span>© 2023 Masaki Yoshiiwa</Span>
     <br />
@@ -34,12 +32,7 @@
   }
   .footer__main {
     margin: auto;
+    margin-bottom: 2rem;
     text-align: center;
-  }
-  .footer__border {
-    position: absolute;
-    top: 0;
-    display: flex;
-    align-items: center;
   }
 </style>
