@@ -1,0 +1,13 @@
+
+/* PERSONAL */
+
+    Writer: Masaki Yoshiiwa
+    Location: Tokyo, Japan
+    GitHub: https://github.com/qlawmarq
+    Email: masaki.yoshiiwa@gmail.com
+
+
+/* SITE */
+
+    Generate: SvelteKit
+    Source: https://github.com/qlawmarq/qlawmarq.github.io
