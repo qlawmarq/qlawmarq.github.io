@@ -8,6 +8,7 @@
 
 <select
   value={$$props.value}
+  aria-label={$$props.ariaLabel}
   {...$$props}
   on:change={(e) => $$props.onchange(e)}
 >
