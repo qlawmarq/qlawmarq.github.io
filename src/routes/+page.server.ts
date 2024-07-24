@@ -13,8 +13,8 @@ export async function load() {
         }),
       })
       .json<GitHubRepo[]>();
-    const filteredAllRepos = allRepos
-      
+    const filteredAllRepos = allRepos;
+
     const starredRepos: GitHubRepo[] = await ky
       .get("https://api.github.com/users/qlawmarq/starred", {
         searchParams: new URLSearchParams({
