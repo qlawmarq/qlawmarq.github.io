@@ -31,10 +31,6 @@ type RootTranslation = {
    * P​a​s​s​i​o​n​a​t​e​ ​a​b​o​u​t​ ​s​o​l​v​i​n​g​ ​i​n​t​e​r​e​s​t​i​n​g​ ​p​r​o​b​l​e​m​s​ ​a​n​d​ ​f​i​n​d​i​n​g​ ​n​e​w​ ​t​e​c​h​n​o​l​o​g​i​e​s​.​ ​L​o​v​e​s​ ​a​u​t​o​m​a​t​i​o​n​,​ ​d​e​s​i​g​n​,​ ​a​n​d​ ​w​r​i​t​i​n​g​ ​c​o​d​e​.
    */
   introduce: string;
-  /**
-   * h​t​t​p​s​:​/​/​g​i​t​h​u​b​.​c​o​m​/​q​l​a​w​m​a​r​q​/​r​e​s​u​m​e​/​b​l​o​b​/​m​a​s​t​e​r​/​M​a​s​a​k​i​Y​o​s​h​i​i​w​a​_​R​e​s​u​m​e​.​p​d​f
-   */
-  resumeUrl: string;
 };
 
 export type TranslationFunctions = {
@@ -54,10 +50,6 @@ export type TranslationFunctions = {
    * Passionate about solving interesting problems and finding new technologies. Loves automation, design, and writing code.
    */
   introduce: () => LocalizedString;
-  /**
-   * https://github.com/qlawmarq/resume/blob/master/MasakiYoshiiwa_Resume.pdf
-   */
-  resumeUrl: () => LocalizedString;
 };
 
 export type Formatters = {};

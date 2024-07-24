@@ -208,15 +208,6 @@
             <GlitchText text={"Email"} factor={8} delay={800} />
           </Anchor>
         </ListItem>
-        <ListItem>
-          <Anchor
-            href={$LL.resumeUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <GlitchText text={"Resume"} factor={8} delay={1000} />
-          </Anchor>
-        </ListItem>
       </UnorderedList>
     </Card>
     {#if ownedRepos.length > 0}
