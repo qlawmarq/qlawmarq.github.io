@@ -144,7 +144,7 @@
 
   {#key $locale}
     <Card>
-      <H2>About</H2>
+      <H2><GlitchText text={"About"} factor={4} minMilsec={60} /></H2>
       <UnorderedList>
         <ListItem>
           Name:
@@ -183,7 +183,7 @@
       </UnorderedList>
     </Card>
     <Card>
-      <H2>Contacts</H2>
+      <H2><GlitchText text={"Contacts"} factor={3} minMilsec={50} /></H2>
       <UnorderedList>
         <ListItem>
           <Anchor
@@ -212,7 +212,7 @@
     </Card>
     {#if ownedRepos.length > 0}
       <Card>
-        <H2>Own GitHub Projects</H2>
+        <H2><GlitchText text={"Own GitHub Projects"} factor={0} /></H2>
         <UnorderedList>
           {#each ownedRepos as repo}
             <ListItem>
@@ -242,7 +242,12 @@
                 {/if}
               </Span>
               <Paragraph>
-                {repo.description}
+                <GlitchText
+                  text={repo.description}
+                  factor={0}
+                  delay={200}
+                  maxMilsec={30}
+                />
               </Paragraph>
             </ListItem>
           {/each}
@@ -258,7 +263,12 @@
     {/if}
     {#if starredRepos.length > 0}
       <Card>
-        <H2>Recently Interested GitHub Projects</H2>
+        <H2
+          ><GlitchText
+            text={"Recently Interested GitHub Projects"}
+            factor={0}
+          /></H2
+        >
         <UnorderedList>
           {#each starredRepos as repo}
             <ListItem>
@@ -288,7 +298,12 @@
                 {/if}
               </Span>
               <Paragraph>
-                {repo.description}
+                <GlitchText
+                  text={repo.description}
+                  factor={0}
+                  delay={200}
+                  maxMilsec={30}
+                />
               </Paragraph>
             </ListItem>
           {/each}
@@ -299,7 +314,12 @@
             target="_blank"
             rel="noopener noreferrer"
           >
-            Click here to check all recently interested projects on GitHub...
+            <GlitchText
+              text={"Click here to check all recently interested projects on GitHub..."}
+              factor={0}
+              delay={200}
+              maxMilsec={30}
+            />
           </Anchor>
         </Span>
       </Card>
