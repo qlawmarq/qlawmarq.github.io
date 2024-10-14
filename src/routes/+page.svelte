@@ -76,7 +76,7 @@
   };
 
   const getRssBlogFeed = async (lang: string) => {
-    const rssUrl = `http://qlawmarq.net/${lang}/blog/rss`;
+    const rssUrl = `https://qlawmarq.net/${lang}/blog/rss`;
     let items: RSSItem[] = [];
     try {
       const response = await fetch(rssUrl);
