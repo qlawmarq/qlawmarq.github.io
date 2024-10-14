@@ -38,7 +38,6 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-svelte": "^2.43.0",
     "isbot": "^3.6.13",
-    "ky": "^1.4.0",
     "prettier": "^3.3.3",
     "prettier-plugin-svelte": "^3.2.6",
     "svelte": "^4.2.18",
@@ -46,7 +45,8 @@
     "tslib": "^2.6.2",
     "typesafe-i18n": "^5.26.2",
     "typescript": "^5.2.2",
-    "vite": "^4.5.3"
+    "vite": "^4.5.3",
+    "fast-xml-parser": "^4.5.0"
   },
   "type": "module"
 }
