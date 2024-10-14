@@ -15,6 +15,34 @@
   import Star from "$lib/images/star.svg";
   import Span from "../components/Typography/Span.svelte";
 
+  async function fetchData() {
+    const lang = $locale === "ja" ? "ja" : "en";
+    let rssItems: RSSItem[] = [];
+    let ownedRepos = [];
+    let starredRepos = [];
+    try {
+      const url = new URL("/api", document.URL);
+      url.search = new URLSearchParams({
+        lang: lang,
+      }).toString();
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Failed to fetch RSS feed");
+      }
+      const resJson = await response.json();
+      rssItems = resJson.rss;
+      ownedRepos = resJson.githubRepo;
+      starredRepos = resJson.githubStaredRepo;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    return {
+      rssItems,
+      ownedRepos,
+      starredRepos,
+    };
+  }
+
   let ownedRepos: GitHubRepo[] = [];
   let starredRepos: GitHubRepo[] = [];
   let rssItems: RSSItem[] = [];
@@ -25,25 +53,6 @@
   LL.subscribe(() => {
     fetchData();
   });
-
-  async function fetchData() {
-    const lang = $locale === "ja" ? "ja" : "en";
-    rssItems = [];
-    ownedRepos = [];
-    starredRepos = [];
-    try {
-      const response = await fetch(`/api?lang=${lang}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch RSS feed");
-      }
-      const res = await response.json();
-      rssItems = res.rss;
-      ownedRepos = res.githubRepo;
-      starredRepos = res.githubStaredRepo;
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }
 </script>
 
 <svelte:head>

@@ -98,12 +98,7 @@
     "allow_forking": true,
     "is_template": false,
     "web_commit_signoff_required": false,
-    "topics": [
-      "nuxt3",
-      "nuxtjs",
-      "tailwindcss",
-      "vue3"
-    ],
+    "topics": ["nuxt3", "nuxtjs", "tailwindcss", "vue3"],
     "visibility": "public",
     "forks": 3,
     "open_issues": 1,
@@ -309,10 +304,7 @@
     "allow_forking": true,
     "is_template": true,
     "web_commit_signoff_required": false,
-    "topics": [
-      "blog",
-      "nextjs"
-    ],
+    "topics": ["blog", "nextjs"],
     "visibility": "public",
     "forks": 1,
     "open_issues": 5,
@@ -412,9 +404,7 @@
     "allow_forking": true,
     "is_template": false,
     "web_commit_signoff_required": false,
-    "topics": [
-      "svelte"
-    ],
+    "topics": ["svelte"],
     "visibility": "public",
     "forks": 0,
     "open_issues": 0,
@@ -732,9 +722,7 @@
     "allow_forking": true,
     "is_template": false,
     "web_commit_signoff_required": false,
-    "topics": [
-      "react-native"
-    ],
+    "topics": ["react-native"],
     "visibility": "public",
     "forks": 0,
     "open_issues": 0,
@@ -840,11 +828,7 @@
     "allow_forking": true,
     "is_template": true,
     "web_commit_signoff_required": false,
-    "topics": [
-      "landing-page",
-      "nextjs",
-      "tailwindcss"
-    ],
+    "topics": ["landing-page", "nextjs", "tailwindcss"],
     "visibility": "public",
     "forks": 1,
     "open_issues": 1,
@@ -1156,12 +1140,7 @@
     "allow_forking": true,
     "is_template": false,
     "web_commit_signoff_required": false,
-    "topics": [
-      "pug",
-      "scss",
-      "tailwindcss",
-      "webpack"
-    ],
+    "topics": ["pug", "scss", "tailwindcss", "webpack"],
     "visibility": "public",
     "forks": 2,
     "open_issues": 2,
@@ -1473,12 +1452,7 @@
     "allow_forking": true,
     "is_template": true,
     "web_commit_signoff_required": false,
-    "topics": [
-      "emotion",
-      "gatsby-blog",
-      "markdown",
-      "typescipt"
-    ],
+    "topics": ["emotion", "gatsby-blog", "markdown", "typescipt"],
     "visibility": "public",
     "forks": 0,
     "open_issues": 19,
@@ -1784,11 +1758,7 @@
     "allow_forking": true,
     "is_template": false,
     "web_commit_signoff_required": false,
-    "topics": [
-      "graphql",
-      "hasura",
-      "nuxtjs"
-    ],
+    "topics": ["graphql", "hasura", "nuxtjs"],
     "visibility": "public",
     "forks": 0,
     "open_issues": 0,
@@ -1888,11 +1858,7 @@
     "allow_forking": true,
     "is_template": false,
     "web_commit_signoff_required": false,
-    "topics": [
-      "cypress",
-      "percy",
-      "react"
-    ],
+    "topics": ["cypress", "percy", "react"],
     "visibility": "public",
     "forks": 0,
     "open_issues": 11,

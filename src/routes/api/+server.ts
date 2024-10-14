@@ -92,7 +92,7 @@ const getRssBlogFeed = async (lang: string) => {
     const xmlData = await response.text();
     const parser = new XMLParser();
     const result = parser.parse(xmlData);
-    items = result.rss.channel.item.map((item: any) => ({
+    items = result.rss.channel.item.map((item: RSSItem) => ({
       title: item.title,
       link: item.link,
       description: item.description,

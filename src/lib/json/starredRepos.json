@@ -204,11 +204,7 @@
     "allow_forking": true,
     "is_template": false,
     "web_commit_signoff_required": false,
-    "topics": [
-      "diffusion-models",
-      "flow-matching",
-      "video-generation"
-    ],
+    "topics": ["diffusion-models", "flow-matching", "video-generation"],
     "visibility": "public",
     "forks": 128,
     "open_issues": 26,
@@ -420,12 +416,7 @@
     "allow_forking": true,
     "is_template": true,
     "web_commit_signoff_required": false,
-    "topics": [
-      "ai-playground",
-      "anthropic",
-      "chatbot",
-      "webcontainers-api"
-    ],
+    "topics": ["ai-playground", "anthropic", "chatbot", "webcontainers-api"],
     "visibility": "public",
     "forks": 586,
     "open_issues": 288,
@@ -751,11 +742,7 @@
     "allow_forking": true,
     "is_template": false,
     "web_commit_signoff_required": false,
-    "topics": [
-      "llm",
-      "local",
-      "pytorch"
-    ],
+    "topics": ["llm", "local", "pytorch"],
     "visibility": "public",
     "forks": 209,
     "open_issues": 104,
