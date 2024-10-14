@@ -8,29 +8,36 @@
   import H1 from "../components/Typography/H1.svelte";
   import Paragraph from "../components/Typography/Paragraph.svelte";
   import LL, { locale } from "../i18n/i18n-svelte";
-  import ky from "ky";
   import type { GitHubRepo } from "../types/github";
+  import type { RSSItem } from "../types/rss";
   import H2 from "../components/Typography/H2.svelte";
   import Badge from "../components/Badge.svelte";
   import Star from "$lib/images/star.svg";
   import Span from "../components/Typography/Span.svelte";
+  import { XMLParser } from "fast-xml-parser";
   import ownedReposJSON from "../lib/json/ownedRepos.json";
   import starredReposJSON from "../lib/json/starredRepos.json";
 
-  let ownedRepos: GitHubRepo[] = [];
-  let starredRepos: GitHubRepo[] = [];
-
-  onMount(() => {
-    if (process.env.NODE_ENV === "development") {
-      loadRepos();
-    } else {
-      fetchOwnRepos();
-      fetchRecentStaredRepos();
+  // Fetch own repo datas in GitHub from GitHub API
+  const fetchGitHubRepos = async () => {
+    let allRepos = ownedReposJSON as unknown as GitHubRepo[];
+    if (process.env.NODE_ENV !== "development") {
+      const url = new URL("https://api.github.com/users/qlawmarq/repos");
+      let allRepos: GitHubRepo[] = [];
+      url.search = new URLSearchParams({
+        type: "public",
+        sort: "updated",
+        per_page: "50",
+      }).toString();
+      try {
+        const res = await fetch(url);
+        const json = res.json();
+        allRepos = json as unknown as GitHubRepo[];
+      } catch (error) {
+        console.warn(error);
+      }
     }
-  });
-
-  const loadRepos = () => {
-    ownedRepos = ownedReposJSON
+    return allRepos
       .filter(
         (repo) =>
           repo.fork === false &&
@@ -46,75 +53,81 @@
         } else {
           return 0;
         }
-      }) as unknown as GitHubRepo[];
-    starredRepos = starredReposJSON as unknown as GitHubRepo[];
+      });
   };
 
   // Fetch own repo datas in GitHub from GitHub API
-  const fetchOwnRepos = async () => {
+  const fetchGithubStaredRepos = async () => {
+    let starredRepos = starredReposJSON as unknown as GitHubRepo[];
+    if (process.env.NODE_ENV !== "development") {
+      const url = new URL("https://api.github.com/users/qlawmarq/starred");
+      url.search = new URLSearchParams({
+        per_page: "8",
+      }).toString();
+      try {
+        const res = await fetch(url);
+        const allRepos = res.json();
+        starredRepos = allRepos as unknown as GitHubRepo[];
+      } catch (error) {
+        console.warn(error);
+      }
+    }
+    return starredRepos;
+  };
+
+  const getRssBlogFeed = async (lang: string) => {
+    const rssUrl = `http://qlawmarq.net/${lang}/blog/rss`;
+    let items: RSSItem[] = [];
     try {
-      const allRepos = await ky
-        .get("https://api.github.com/users/qlawmarq/repos", {
-          searchParams: new URLSearchParams({
-            type: "public",
-            sort: "updated",
-            per_page: "50",
-          }),
-        })
-        .json<GitHubRepo[]>();
-      ownedRepos = allRepos
-        .filter(
-          (repo) =>
-            repo.fork === false &&
-            repo.description !== null &&
-            repo.description !== "" &&
-            repo.stargazers_count > 1,
-        )
-        .sort((a, b) => {
-          if (a.stargazers_count > b.stargazers_count) {
-            return -1;
-          } else if (a.stargazers_count < b.stargazers_count) {
-            return 1;
-          } else {
-            return 0;
-          }
-        });
-    } catch (error) {
-      ownedRepos = ownedReposJSON
-        .filter(
-          (repo) =>
-            repo.fork === false &&
-            repo.description !== null &&
-            repo.description !== "" &&
-            repo.stargazers_count > 1,
-        )
-        .sort((a, b) => {
-          if (a.stargazers_count > b.stargazers_count) {
-            return -1;
-          } else if (a.stargazers_count < b.stargazers_count) {
-            return 1;
-          } else {
-            return 0;
-          }
-        }) as unknown as GitHubRepo[];
+      const response = await fetch(rssUrl);
+      const xmlData = await response.text();
+      const parser = new XMLParser();
+      const result = parser.parse(xmlData);
+      items = result.rss.channel.item.map((item: RSSItem) => ({
+        title: item.title,
+        link: item.link,
+        description: item.description,
+        pubDate: item.pubDate,
+      }));
+      return items;
+    } catch (err) {
+      console.error("Error fetching RSS feed:", err);
+      return items;
     }
   };
 
-  // Fetch own repo datas in GitHub from GitHub API
-  const fetchRecentStaredRepos = async () => {
-    try {
-      const allRepos = await ky
-        .get("https://api.github.com/users/qlawmarq/starred", {
-          searchParams: new URLSearchParams({
-            per_page: "8",
-          }),
-        })
-        .json<GitHubRepo[]>();
-      starredRepos = allRepos;
-    } catch (error) {
-      starredRepos = starredReposJSON as unknown as GitHubRepo[];
-    }
-  };
+  async function fetchData() {
+    const lang = $locale === "ja" ? "ja" : "en";
+    const rss = await getRssBlogFeed(lang);
+    const githubRepo = await fetchGitHubRepos();
+    const githubStaredRepo = await fetchGithubStaredRepos();
+    return {
+      rss: rss,
+      githubRepo: githubRepo,
+      githubStaredRepo: githubStaredRepo,
+    };
+  }
+
+  async function getAndSetData() {
+    ownedRepos = [];
+    starredRepos = [];
+    rssItems = [];
+    const data = await fetchData();
+    ownedRepos = data.githubRepo;
+    starredRepos = data.githubStaredRepo;
+    rssItems = data.rss;
+  }
+
+  let ownedRepos: GitHubRepo[] = [];
+  let starredRepos: GitHubRepo[] = [];
+  let rssItems: RSSItem[] = [];
+
+  onMount(async () => {
+    getAndSetData();
+  });
+  LL.subscribe(() => {
+    getAndSetData();
+  });
 </script>
 
 <svelte:head>
@@ -204,12 +217,47 @@
           </Anchor>
         </ListItem>
         <ListItem>
+          <Anchor
+            href={`https://qlawmarq.net/${$locale}/blog`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <GlitchText text={"Blog"} factor={8} delay={400} />
+          </Anchor>
+        </ListItem>
+        <ListItem>
           <Anchor href="mailto:masaki.yoshiiwa@gmail.com">
             <GlitchText text={"Email"} factor={8} delay={800} />
           </Anchor>
         </ListItem>
       </UnorderedList>
     </Card>
+    {#if rssItems.length > 0}
+      <Card>
+        <H2><GlitchText text="Recent Blog Posts" factor={0} /></H2>
+        <UnorderedList>
+          {#each rssItems as item}
+            <ListItem>
+              <Anchor
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <GlitchText
+                  text={item.title}
+                  factor={0}
+                  delay={200}
+                  maxMilsec={30}
+                />
+              </Anchor>
+              <Paragraph>
+                {new Date(item.pubDate).toLocaleDateString()}
+              </Paragraph>
+            </ListItem>
+          {/each}
+        </UnorderedList>
+      </Card>
+    {/if}
     {#if ownedRepos.length > 0}
       <Card>
         <H2><GlitchText text={"Own GitHub Projects"} factor={0} /></H2>
