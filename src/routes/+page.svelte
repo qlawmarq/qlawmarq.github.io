@@ -14,33 +14,108 @@
   import Badge from "../components/Badge.svelte";
   import Star from "$lib/images/star.svg";
   import Span from "../components/Typography/Span.svelte";
+  import { XMLParser } from "fast-xml-parser";
+  import ownedReposJSON from "../lib/json/ownedRepos.json";
+  import starredReposJSON from "../lib/json/starredRepos.json";
+
+  // Fetch own repo datas in GitHub from GitHub API
+  const fetchGitHubRepos = async () => {
+    let allRepos = ownedReposJSON as unknown as GitHubRepo[];
+    if (process.env.NODE_ENV !== "development") {
+      const url = new URL("https://api.github.com/users/qlawmarq/repos");
+      let allRepos: GitHubRepo[] = [];
+      url.search = new URLSearchParams({
+        type: "public",
+        sort: "updated",
+        per_page: "50",
+      }).toString();
+      try {
+        const res = await fetch(url);
+        const json = res.json();
+        allRepos = json as unknown as GitHubRepo[];
+      } catch (error) {
+        console.warn(error);
+      }
+    }
+    return allRepos
+      .filter(
+        (repo) =>
+          repo.fork === false &&
+          repo.description !== null &&
+          repo.description !== "" &&
+          repo.stargazers_count > 1,
+      )
+      .sort((a, b) => {
+        if (a.stargazers_count > b.stargazers_count) {
+          return -1;
+        } else if (a.stargazers_count < b.stargazers_count) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+  };
+
+  // Fetch own repo datas in GitHub from GitHub API
+  const fetchGithubStaredRepos = async () => {
+    let starredRepos = starredReposJSON as unknown as GitHubRepo[];
+    if (process.env.NODE_ENV !== "development") {
+      const url = new URL("https://api.github.com/users/qlawmarq/starred");
+      url.search = new URLSearchParams({
+        per_page: "8",
+      }).toString();
+      try {
+        const res = await fetch(url);
+        const allRepos = res.json();
+        starredRepos = allRepos as unknown as GitHubRepo[];
+      } catch (error) {
+        console.warn(error);
+      }
+    }
+    return starredRepos;
+  };
+
+  const getRssBlogFeed = async (lang: string) => {
+    const rssUrl = `http://qlawmarq.net/${lang}/blog/rss`;
+    let items: RSSItem[] = [];
+    try {
+      const response = await fetch(rssUrl);
+      const xmlData = await response.text();
+      const parser = new XMLParser();
+      const result = parser.parse(xmlData);
+      items = result.rss.channel.item.map((item: RSSItem) => ({
+        title: item.title,
+        link: item.link,
+        description: item.description,
+        pubDate: item.pubDate,
+      }));
+      return items;
+    } catch (err) {
+      console.error("Error fetching RSS feed:", err);
+      return items;
+    }
+  };
 
   async function fetchData() {
     const lang = $locale === "ja" ? "ja" : "en";
-    let rssItems: RSSItem[] = [];
-    let ownedRepos = [];
-    let starredRepos = [];
-    try {
-      const url = new URL("/api", document.URL);
-      url.search = new URLSearchParams({
-        lang: lang,
-      }).toString();
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Failed to fetch RSS feed");
-      }
-      const resJson = await response.json();
-      rssItems = resJson.rss;
-      ownedRepos = resJson.githubRepo;
-      starredRepos = resJson.githubStaredRepo;
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    const rss = await getRssBlogFeed(lang);
+    const githubRepo = await fetchGitHubRepos();
+    const githubStaredRepo = await fetchGithubStaredRepos();
     return {
-      rssItems,
-      ownedRepos,
-      starredRepos,
+      rss: rss,
+      githubRepo: githubRepo,
+      githubStaredRepo: githubStaredRepo,
     };
+  }
+
+  async function getAndSetData() {
+    ownedRepos = [];
+    starredRepos = [];
+    rssItems = [];
+    const data = await fetchData();
+    ownedRepos = data.githubRepo;
+    starredRepos = data.githubStaredRepo;
+    rssItems = data.rss;
   }
 
   let ownedRepos: GitHubRepo[] = [];
@@ -48,10 +123,10 @@
   let rssItems: RSSItem[] = [];
 
   onMount(async () => {
-    fetchData();
+    getAndSetData();
   });
   LL.subscribe(() => {
-    fetchData();
+    getAndSetData();
   });
 </script>
 
