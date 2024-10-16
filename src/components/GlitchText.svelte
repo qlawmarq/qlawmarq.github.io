@@ -10,7 +10,7 @@
   let isFinished = false;
   let isStarted = false;
   let counter = -1;
-  $: renderGlitchText();
+  $: text?.length && renderGlitchText();
 
   const renderGlitchText = () => {
     isStarted = true;
