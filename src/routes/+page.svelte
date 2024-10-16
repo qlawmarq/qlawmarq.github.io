@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import Card from "../components/Card.svelte";
   import GlitchText from "../components/GlitchText.svelte";
   import ListItem from "../components/List/ListItem.svelte";
@@ -121,12 +120,13 @@
   let ownedRepos: GitHubRepo[] = [];
   let starredRepos: GitHubRepo[] = [];
   let rssItems: RSSItem[] = [];
+  let currentLocale = "";
 
-  onMount(async () => {
-    getAndSetData();
-  });
-  LL.subscribe(() => {
-    getAndSetData();
+  LL.subscribe((l) => {
+    if ($locale !== currentLocale) {
+      currentLocale = $locale;
+      getAndSetData();
+    }
   });
 </script>
 
@@ -150,7 +150,7 @@
   <meta property="og:image" content="https://qlawmarq.github.io/icon.png" />
 </svelte:head>
 
-<section>
+<section role="main">
   <H1>
     <GlitchText text={$LL.hello()} factor={2} minMilsec={55} />
   </H1>
@@ -177,7 +177,7 @@
           />
         </ListItem>
         <ListItem>
-          Tech Skills:
+          Technical Skills:
           <Badge>TypeScript</Badge>
           <Badge>JavaScript</Badge>
           <Badge>Python</Badge>
@@ -203,6 +203,7 @@
             href={"https://github.com/qlawmarq"}
             target="_blank"
             rel="noopener noreferrer"
+            ariaLabel={`Check GitHub account`}
           >
             <GlitchText text={"GitHub"} factor={8} delay={400} />
           </Anchor>
@@ -212,6 +213,7 @@
             href={"https://www.linkedin.com/in/qlawmarq/"}
             target="_blank"
             rel="noopener noreferrer"
+            ariaLabel={`Check LinkdIn account`}
           >
             <GlitchText text={"LinkdIn"} factor={8} delay={600} />
           </Anchor>
@@ -221,12 +223,13 @@
             href={`https://qlawmarq.net/${$locale}/blog`}
             target="_blank"
             rel="noopener noreferrer"
+            ariaLabel={`Check Blog`}
           >
             <GlitchText text={"Blog"} factor={8} delay={400} />
           </Anchor>
         </ListItem>
         <ListItem>
-          <Anchor href="mailto:masaki.yoshiiwa@gmail.com">
+          <Anchor href="mailto:masaki.yoshiiwa@gmail.com" ariaLabel={`Email`}>
             <GlitchText text={"Email"} factor={8} delay={800} />
           </Anchor>
         </ListItem>
@@ -242,6 +245,7 @@
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
+                ariaLabel={item.title}
               >
                 <GlitchText
                   text={item.title}
@@ -260,7 +264,7 @@
     {/if}
     {#if ownedRepos.length > 0}
       <Card>
-        <H2><GlitchText text={"Own GitHub Projects"} factor={0} /></H2>
+        <H2><GlitchText text={"My GitHub Projects"} factor={0} /></H2>
         <UnorderedList>
           {#each ownedRepos as repo}
             <ListItem>
@@ -268,6 +272,7 @@
                 href={repo.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
+                ariaLabel={repo.name}
               >
                 {repo.name}
               </Anchor>
@@ -283,6 +288,7 @@
                       href={repo.homepage}
                       target="_blank"
                       rel="noopener noreferrer"
+                      ariaLabel={repo.homepage}
                     >
                       Homepage
                     </Anchor>
@@ -304,19 +310,15 @@
           href="https://github.com/qlawmarq?tab=repositories"
           target="_blank"
           rel="noopener noreferrer"
+          ariaLabel={"View all my projects on GitHub."}
         >
-          <Span>Click here to check all projects on GitHub...</Span>
+          <Span>View all my projects on GitHub.</Span>
         </Anchor>
       </Card>
     {/if}
     {#if starredRepos.length > 0}
       <Card>
-        <H2
-          ><GlitchText
-            text={"Recently Interested GitHub Projects"}
-            factor={0}
-          /></H2
-        >
+        <H2><GlitchText text={"Projects I'm Interested In"} factor={0} /></H2>
         <UnorderedList>
           {#each starredRepos as repo}
             <ListItem>
@@ -324,6 +326,7 @@
                 href={repo.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
+                ariaLabel={repo.name}
               >
                 {repo.name}
               </Anchor>
@@ -339,6 +342,7 @@
                       href={repo.homepage}
                       target="_blank"
                       rel="noopener noreferrer"
+                      ariaLabel={repo.homepage}
                     >
                       Homepage
                     </Anchor>
@@ -361,9 +365,10 @@
             href="https://github.com/qlawmarq?tab=stars"
             target="_blank"
             rel="noopener noreferrer"
+            ariaLabel={"View all projects I'm interested in on GitHub."}
           >
             <GlitchText
-              text={"Click here to check all recently interested projects on GitHub..."}
+              text={"View all projects I'm interested in on GitHub."}
               factor={0}
               delay={200}
               maxMilsec={30}
