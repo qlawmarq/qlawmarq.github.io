@@ -17,18 +17,12 @@ module.exports = {
       },
     },
   ],
-  rules: {
-    "no-unused-vars": "off",
-    "no-undef": "off",
-    "@typescript-eslint/no-unused-vars": ["off"],
-  },
   parserOptions: {
     sourceType: "module",
-    ecmaVersion: 2020,
+    ecmaVersion: "latest",
   },
   env: {
     browser: true,
-    es2017: true,
     node: true,
   },
 };
