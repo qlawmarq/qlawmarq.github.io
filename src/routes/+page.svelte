@@ -157,7 +157,7 @@
 
   {#key $locale}
     <Card>
-      <H2><GlitchText text={"About"} factor={4} minMilsec={60} /></H2>
+      <H2><GlitchText text={$LL.about()} factor={4} minMilsec={60} /></H2>
       <UnorderedList>
         <ListItem>
           Name:
@@ -196,7 +196,7 @@
       </UnorderedList>
     </Card>
     <Card>
-      <H2><GlitchText text={"Contacts"} factor={3} minMilsec={50} /></H2>
+      <H2><GlitchText text={$LL.contact()} factor={3} minMilsec={50} /></H2>
       <UnorderedList>
         <ListItem>
           <Anchor
@@ -237,7 +237,7 @@
     </Card>
     {#if rssItems.length > 0}
       <Card>
-        <H2><GlitchText text="Recent Blog Posts" factor={0} /></H2>
+        <H2><GlitchText text={$LL.recentBlogPosts()} factor={0} /></H2>
         <UnorderedList>
           {#each rssItems as item}
             <ListItem>
@@ -264,7 +264,7 @@
     {/if}
     {#if ownedRepos.length > 0}
       <Card>
-        <H2><GlitchText text={"My GitHub Projects"} factor={0} /></H2>
+        <H2><GlitchText text={$LL.myProjects()} factor={0} /></H2>
         <UnorderedList>
           {#each ownedRepos as repo}
             <ListItem>
@@ -312,13 +312,13 @@
           rel="noopener noreferrer"
           ariaLabel={"View all my projects on GitHub."}
         >
-          <Span>View all my projects on GitHub.</Span>
+          <Span>{$LL.viewAllProjects()}</Span>
         </Anchor>
       </Card>
     {/if}
     {#if starredRepos.length > 0}
       <Card>
-        <H2><GlitchText text={"Projects I'm Interested In"} factor={0} /></H2>
+        <H2><GlitchText text={$LL.projects()} factor={0} /></H2>
         <UnorderedList>
           {#each starredRepos as repo}
             <ListItem>
@@ -351,7 +351,7 @@
               </Span>
               <Paragraph>
                 <GlitchText
-                  text={repo.description}
+                  text={repo.description || "No description"}
                   factor={0}
                   delay={200}
                   maxMilsec={30}
@@ -365,10 +365,10 @@
             href="https://github.com/qlawmarq?tab=stars"
             target="_blank"
             rel="noopener noreferrer"
-            ariaLabel={"View all projects I'm interested in on GitHub."}
+            ariaLabel={$LL.viewAllProjects()}
           >
             <GlitchText
-              text={"View all projects I'm interested in on GitHub."}
+              text={$LL.viewAllProjects()}
               factor={0}
               delay={200}
               maxMilsec={30}
