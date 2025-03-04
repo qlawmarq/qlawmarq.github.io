@@ -31,6 +31,30 @@ type RootTranslation = {
    * P​a​s​s​i​o​n​a​t​e​ ​a​b​o​u​t​ ​s​o​l​v​i​n​g​ ​i​n​t​e​r​e​s​t​i​n​g​ ​p​r​o​b​l​e​m​s​ ​a​n​d​ ​f​i​n​d​i​n​g​ ​n​e​w​ ​t​e​c​h​n​o​l​o​g​i​e​s​.​ ​L​o​v​e​s​ ​a​u​t​o​m​a​t​i​o​n​,​ ​d​e​s​i​g​n​,​ ​a​n​d​ ​w​r​i​t​i​n​g​ ​c​o​d​e​.
    */
   introduce: string;
+  /**
+   * A​b​o​u​t
+   */
+  about: string;
+  /**
+   * C​o​n​t​a​c​t
+   */
+  contact: string;
+  /**
+   * M​y​ ​P​r​o​j​e​c​t​s
+   */
+  myProjects: string;
+  /**
+   * P​r​o​j​e​c​t​s​ ​I​'​m​ ​I​n​t​e​r​e​s​t​e​d​ ​I​n
+   */
+  projects: string;
+  /**
+   * V​i​e​w​ ​a​l​l​ ​p​r​o​j​e​c​t​s​ ​i​n​ ​G​i​t​H​u​b​.
+   */
+  viewAllProjects: string;
+  /**
+   * R​e​c​e​n​t​ ​B​l​o​g​ ​P​o​s​t​s
+   */
+  recentBlogPosts: string;
 };
 
 export type TranslationFunctions = {
@@ -50,6 +74,30 @@ export type TranslationFunctions = {
    * Passionate about solving interesting problems and finding new technologies. Loves automation, design, and writing code.
    */
   introduce: () => LocalizedString;
+  /**
+   * About
+   */
+  about: () => LocalizedString;
+  /**
+   * Contact
+   */
+  contact: () => LocalizedString;
+  /**
+   * My Projects
+   */
+  myProjects: () => LocalizedString;
+  /**
+   * Projects I'm Interested In
+   */
+  projects: () => LocalizedString;
+  /**
+   * View all projects in GitHub.
+   */
+  viewAllProjects: () => LocalizedString;
+  /**
+   * Recent Blog Posts
+   */
+  recentBlogPosts: () => LocalizedString;
 };
 
 export type Formatters = {};
