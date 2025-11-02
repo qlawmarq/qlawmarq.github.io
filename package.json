@@ -33,7 +33,7 @@
     "@sveltejs/kit": "^2.43.6",
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
     "@types/cookie": "^1.0.0",
-    "@types/node": "^22.13.9",
+    "@types/node": "^24.9.2",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.57.1",
