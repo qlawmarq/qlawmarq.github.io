@@ -38,6 +38,8 @@ export default [
       ],
       // Allow empty interface extending svelteHTML attributes
       "@typescript-eslint/no-empty-object-type": "off",
+      // Disable for external links (this is a static site with no SvelteKit routing)
+      "svelte/no-navigation-without-resolve": "off",
     },
   },
   {

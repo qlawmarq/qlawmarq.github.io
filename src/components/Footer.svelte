@@ -1,20 +1,18 @@
 <script>
   import Border from "./Border.svelte";
-  import Anchor from "./Typography/Anchor.svelte";
-  import Span from "./Typography/Span.svelte";
 </script>
 
 <footer>
   <Border />
   <div class="footer__main">
-    <Span>© 2023 Masaki Yoshiiwa</Span>
+    <span class="text-small">© 2023 Masaki Yoshiiwa</span>
     <br />
-    <Span
-      ><Anchor
+    <span class="text-small"
+      ><a
         href="https://github.com/qlawmarq/qlawmarq.github.io"
         target="_blank"
-        rel="noopener noreferrer">Check the code on GitHub.</Anchor
-      ></Span
+        rel="noopener noreferrer">Check the code on GitHub.</a
+      ></span
     >
   </div>
 </footer>

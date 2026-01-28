@@ -1,19 +1,14 @@
 <script lang="ts">
   import Card from "../components/Card.svelte";
   import GlitchText from "../components/GlitchText.svelte";
-  import ListItem from "../components/List/ListItem.svelte";
-  import UnorderedList from "../components/List/UnorderedList.svelte";
-  import Anchor from "../components/Typography/Anchor.svelte";
-  import H1 from "../components/Typography/H1.svelte";
-  import Paragraph from "../components/Typography/Paragraph.svelte";
   import LL, { locale } from "../i18n/i18n-svelte";
   import type { GitHubRepo } from "../types/github";
   import type { RSSItem } from "../types/rss";
-  import H2 from "../components/Typography/H2.svelte";
   import Badge from "../components/Badge.svelte";
   import Star from "$lib/images/star.svg";
-  import Span from "../components/Typography/Span.svelte";
   import { XMLParser } from "fast-xml-parser";
+  import { marked } from "marked";
+  import DOMPurify from "isomorphic-dompurify";
   import ownedReposJSON from "../lib/json/ownedRepos.json";
   import starredReposJSON from "../lib/json/starredRepos.json";
 
@@ -92,15 +87,46 @@
     }
   };
 
+  const fetchAboutContent = async (lang: string): Promise<string | null> => {
+    // Use proxy in development to avoid CORS issues
+    const url = import.meta.env.DEV
+      ? `/api/about/${lang}/about.md`
+      : `https://storage.googleapis.com/qlawmarq.net/pages/${lang}/about.md`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) return null;
+      const markdown = await res.text();
+
+      // Remove frontmatter
+      const contentWithoutFrontmatter = markdown.replace(
+        /^---[\s\S]*?---\n/,
+        "",
+      );
+
+      // Convert to HTML and sanitize
+      const rawHtml = await marked.parse(contentWithoutFrontmatter);
+      const sanitizedHtml = DOMPurify.sanitize(rawHtml);
+
+      return sanitizedHtml;
+    } catch (error) {
+      console.error("Error fetching about content:", error);
+      return null;
+    }
+  };
+
   async function fetchData() {
     const lang = $locale === "ja" ? "ja" : "en";
-    const rss = await getRssBlogFeed(lang);
-    const githubRepo = await fetchGitHubRepos();
-    const githubStaredRepo = await fetchGithubStaredRepos();
+    const [rss, githubRepo, githubStaredRepo, about] = await Promise.all([
+      getRssBlogFeed(lang),
+      fetchGitHubRepos(),
+      fetchGithubStaredRepos(),
+      fetchAboutContent(lang),
+    ]);
     return {
-      rss: rss,
-      githubRepo: githubRepo,
-      githubStaredRepo: githubStaredRepo,
+      rss,
+      githubRepo,
+      githubStaredRepo,
+      about,
     };
   }
 
@@ -108,15 +134,18 @@
     ownedRepos = [];
     starredRepos = [];
     rssItems = [];
+    aboutContent = null;
     const data = await fetchData();
     ownedRepos = data.githubRepo;
     starredRepos = data.githubStaredRepo;
     rssItems = data.rss;
+    aboutContent = data.about;
   }
 
   let ownedRepos = $state<GitHubRepo[]>([]);
   let starredRepos = $state<GitHubRepo[]>([]);
   let rssItems = $state<RSSItem[]>([]);
+  let aboutContent = $state<string | null>(null);
   let currentLocale = $state("");
 
   $effect(() => {
@@ -128,18 +157,15 @@
 </script>
 
 <svelte:head>
-  <title>Profile - {$LL.name() || "Masaki Yoshiiwa"}</title>
-  <meta name="title" content="Profile - {$LL.name() || 'Masaki Yoshiiwa'} " />
+  <title>Profile - {$LL.name()}</title>
+  <meta name="title" content="Profile - {$LL.name()}" />
   <meta
     name="description"
     content="GitHub Profile Page of Masaki Yoshiiwa, software engineer, web developer, and mobile app developer."
   />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://qlawmarq.github.io/" />
-  <meta
-    property="og:title"
-    content="Profile - {$LL.name() || 'Masaki Yoshiiwa'} "
-  />
+  <meta property="og:title" content="Profile - {$LL.name()}" />
   <meta
     property="og:description"
     content="GitHub Profile Page of Masaki Yoshiiwa, software engineer, web developer, and mobile app developer."
@@ -148,97 +174,26 @@
 </svelte:head>
 
 <section role="main">
-  <H1>
+  <h1>
     <GlitchText text={$LL.hello()} factor={2} minMilsec={55} />
-  </H1>
+  </h1>
 
   {#key $locale}
-    <Card>
-      <H2><GlitchText text={$LL.about()} factor={4} minMilsec={60} /></H2>
-      <UnorderedList>
-        <ListItem>
-          Name:
-          <GlitchText text={$LL.name()} factor={2} delay={100} minMilsec={45} />
-        </ListItem>
-        <ListItem>
-          Job:
-          <GlitchText text={$LL.job()} factor={0} delay={200} maxMilsec={40} />
-        </ListItem>
-        <ListItem>
-          Bio:
-          <GlitchText
-            text={$LL.introduce()}
-            factor={0}
-            delay={300}
-            maxMilsec={30}
-          />
-        </ListItem>
-        <ListItem>
-          Technical Skills:
-          <Badge>TypeScript</Badge>
-          <Badge>JavaScript</Badge>
-          <Badge>Python</Badge>
-          <Badge>React.js</Badge>
-          <Badge>React Native</Badge>
-          <Badge>Vue</Badge>
-          <Badge>Docker</Badge>
-          <Badge>K8S</Badge>
-          <Badge>HTML/CSS</Badge>
-          <Badge>SQL</Badge>
-          <Badge>Figma</Badge>
-          <Badge>CI/CD</Badge>
-          <Badge>GCP</Badge>
-          <Badge>AWS</Badge>
-        </ListItem>
-      </UnorderedList>
-    </Card>
-    <Card>
-      <H2><GlitchText text={$LL.contact()} factor={3} minMilsec={50} /></H2>
-      <UnorderedList>
-        <ListItem>
-          <Anchor
-            href="https://github.com/qlawmarq"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Check GitHub account"
-          >
-            <GlitchText text="GitHub" factor={8} delay={400} />
-          </Anchor>
-        </ListItem>
-        <ListItem>
-          <Anchor
-            href="https://www.linkedin.com/in/qlawmarq/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Check LinkdIn account"
-          >
-            <GlitchText text="LinkdIn" factor={8} delay={600} />
-          </Anchor>
-        </ListItem>
-        <ListItem>
-          <Anchor
-            href={`https://qlawmarq.net/${$locale}/blog`}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Check Blog"
-          >
-            <GlitchText text="Blog" factor={8} delay={400} />
-          </Anchor>
-        </ListItem>
-        <ListItem>
-          <Anchor href="mailto:masaki.yoshiiwa@gmail.com" aria-label="Email">
-            <GlitchText text="Email" factor={8} delay={800} />
-          </Anchor>
-        </ListItem>
-      </UnorderedList>
-    </Card>
+    {#if aboutContent}
+      <Card>
+        <div class="about-content">
+          <!-- eslint-disable-next-line svelte/no-at-html-tags -- Sanitized by DOMPurify -->
+          {@html aboutContent}
+        </div>
+      </Card>
+    {/if}
     {#if rssItems.length > 0}
       <Card>
-        <H2><GlitchText text={$LL.recentBlogPosts()} factor={0} /></H2>
-        <UnorderedList>
+        <h2><GlitchText text={$LL.recentBlogPosts()} factor={0} /></h2>
+        <ul>
           {#each rssItems as item (item.link)}
-            <ListItem>
-              <Anchor
+            <li>
+              <a
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -250,115 +205,121 @@
                   delay={200}
                   maxMilsec={30}
                 />
-              </Anchor>
-              <Paragraph>
+              </a>
+              <p>
                 {new Date(item.pubDate).toLocaleDateString()}
-              </Paragraph>
-            </ListItem>
+              </p>
+            </li>
           {/each}
-        </UnorderedList>
+        </ul>
       </Card>
     {/if}
     {#if ownedRepos.length > 0}
       <Card>
-        <H2><GlitchText text={$LL.myProjects()} factor={0} /></H2>
-        <UnorderedList>
+        <h2><GlitchText text={$LL.myProjects()} factor={0} /></h2>
+        <ul>
           {#each ownedRepos as repo (repo.id)}
-            <ListItem>
-              <Anchor
+            <li>
+              <a
                 href={repo.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={repo.name}
               >
                 {repo.name}
-              </Anchor>
+              </a>
               <Badge>
                 {repo.language || "Other"}
               </Badge>
-              <Span style="display: inline-flex;">
+              <span class="text-small" style="display: inline-flex;">
                 <img src={Star} alt="Star" height="12" width="12" />
                 {repo.stargazers_count}
                 {#if repo.homepage}
-                  <Span style="display: inline-flex; margin-left: 0.5rem;">
-                    <Anchor
+                  <span
+                    class="text-small"
+                    style="display: inline-flex; margin-left: 0.5rem;"
+                  >
+                    <a
                       href={repo.homepage}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={repo.homepage}
                     >
                       Homepage
-                    </Anchor>
-                  </Span>
+                    </a>
+                  </span>
                 {/if}
-              </Span>
-              <Paragraph>
+              </span>
+              <p>
                 <GlitchText
                   text={repo.description}
                   factor={0}
                   delay={200}
                   maxMilsec={30}
                 />
-              </Paragraph>
-            </ListItem>
+              </p>
+            </li>
           {/each}
-        </UnorderedList>
-        <Anchor
+        </ul>
+        <a
           href="https://github.com/qlawmarq?tab=repositories"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="View all my projects on GitHub."
         >
-          <Span>{$LL.viewAllProjects()}</Span>
-        </Anchor>
+          <span class="text-small">{$LL.viewAllProjects()}</span>
+        </a>
       </Card>
     {/if}
     {#if starredRepos.length > 0}
       <Card>
-        <H2><GlitchText text={$LL.projects()} factor={0} /></H2>
-        <UnorderedList>
+        <h2><GlitchText text={$LL.projects()} factor={0} /></h2>
+        <ul>
           {#each starredRepos as repo (repo.id)}
-            <ListItem>
-              <Anchor
+            <li>
+              <a
                 href={repo.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={repo.name}
               >
                 {repo.name}
-              </Anchor>
+              </a>
               <Badge>
                 {repo.language || "Other"}
               </Badge>
-              <Span style="display: inline-flex;">
+              <span class="text-small" style="display: inline-flex;">
                 <img src={Star} alt="Star" height="12" width="12" />
                 {repo.stargazers_count}
                 {#if repo.homepage}
-                  <Span style="display: inline-flex; margin-left: 0.5rem;">
-                    <Anchor
+                  <span
+                    class="text-small"
+                    style="display: inline-flex; margin-left: 0.5rem;"
+                  >
+                    <a
                       href={repo.homepage}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={repo.homepage}
                     >
                       Homepage
-                    </Anchor>
-                  </Span>
+                    </a>
+                  </span>
                 {/if}
-              </Span>
-              <Paragraph>
+              </span>
+              <p>
                 <GlitchText
                   text={repo.description || "No description"}
                   factor={0}
                   delay={200}
                   maxMilsec={30}
                 />
-              </Paragraph>
-            </ListItem>
+              </p>
+            </li>
           {/each}
-        </UnorderedList>
-        <Span>
-          <Anchor
+        </ul>
+        <span class="text-small">
+          <a
             href="https://github.com/qlawmarq?tab=stars"
             target="_blank"
             rel="noopener noreferrer"
@@ -370,8 +331,8 @@
               delay={200}
               maxMilsec={30}
             />
-          </Anchor>
-        </Span>
+          </a>
+        </span>
       </Card>
     {/if}
   {/key}
