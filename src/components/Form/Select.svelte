@@ -1,6 +1,8 @@
 <script lang="ts">
-  interface ExtendedHTMLSelectElement
-    extends Omit<HTMLSelectElement, "options"> {
+  interface ExtendedHTMLSelectElement extends Omit<
+    HTMLSelectElement,
+    "options"
+  > {
     options: { text: string; value: string }[];
   }
   interface $$Props extends Partial<ExtendedHTMLSelectElement> {}
@@ -12,7 +14,7 @@
   {...$$props}
   on:change={(e) => $$props.onchange(e)}
 >
-  {#each $$props.options as option}
+  {#each $$props.options as option (option.value)}
     <option value={option.value}>{option.text}</option>
   {/each}
 </select>

@@ -19,10 +19,9 @@
 
   // Fetch own repo datas in GitHub from GitHub API
   const fetchGitHubRepos = async () => {
-    let allRepos = ownedReposJSON as unknown as GitHubRepo[];
+    let repos = ownedReposJSON as unknown as GitHubRepo[];
     if (process.env.NODE_ENV !== "development") {
       const url = new URL("https://api.github.com/users/qlawmarq/repos");
-      let allRepos: GitHubRepo[] = [];
       url.search = new URLSearchParams({
         type: "public",
         sort: "updated",
@@ -31,12 +30,12 @@
       try {
         const res = await fetch(url);
         const json = res.json();
-        allRepos = json as unknown as GitHubRepo[];
+        repos = json as unknown as GitHubRepo[];
       } catch (error) {
         console.warn(error);
       }
     }
-    return allRepos
+    return repos
       .filter(
         (repo) =>
           repo.fork === false &&
@@ -122,7 +121,7 @@
   let rssItems: RSSItem[] = [];
   let currentLocale = "";
 
-  LL.subscribe((l) => {
+  LL.subscribe(() => {
     if ($locale !== currentLocale) {
       currentLocale = $locale;
       getAndSetData();
@@ -200,22 +199,22 @@
       <UnorderedList>
         <ListItem>
           <Anchor
-            href={"https://github.com/qlawmarq"}
+            href="https://github.com/qlawmarq"
             target="_blank"
             rel="noopener noreferrer"
-            ariaLabel={`Check GitHub account`}
+            ariaLabel="Check GitHub account"
           >
-            <GlitchText text={"GitHub"} factor={8} delay={400} />
+            <GlitchText text="GitHub" factor={8} delay={400} />
           </Anchor>
         </ListItem>
         <ListItem>
           <Anchor
-            href={"https://www.linkedin.com/in/qlawmarq/"}
+            href="https://www.linkedin.com/in/qlawmarq/"
             target="_blank"
             rel="noopener noreferrer"
-            ariaLabel={`Check LinkdIn account`}
+            ariaLabel="Check LinkdIn account"
           >
-            <GlitchText text={"LinkdIn"} factor={8} delay={600} />
+            <GlitchText text="LinkdIn" factor={8} delay={600} />
           </Anchor>
         </ListItem>
         <ListItem>
@@ -223,14 +222,14 @@
             href={`https://qlawmarq.net/${$locale}/blog`}
             target="_blank"
             rel="noopener noreferrer"
-            ariaLabel={`Check Blog`}
+            ariaLabel="Check Blog"
           >
-            <GlitchText text={"Blog"} factor={8} delay={400} />
+            <GlitchText text="Blog" factor={8} delay={400} />
           </Anchor>
         </ListItem>
         <ListItem>
-          <Anchor href="mailto:masaki.yoshiiwa@gmail.com" ariaLabel={`Email`}>
-            <GlitchText text={"Email"} factor={8} delay={800} />
+          <Anchor href="mailto:masaki.yoshiiwa@gmail.com" ariaLabel="Email">
+            <GlitchText text="Email" factor={8} delay={800} />
           </Anchor>
         </ListItem>
       </UnorderedList>
@@ -239,7 +238,7 @@
       <Card>
         <H2><GlitchText text={$LL.recentBlogPosts()} factor={0} /></H2>
         <UnorderedList>
-          {#each rssItems as item}
+          {#each rssItems as item (item.link)}
             <ListItem>
               <Anchor
                 href={item.link}
@@ -266,7 +265,7 @@
       <Card>
         <H2><GlitchText text={$LL.myProjects()} factor={0} /></H2>
         <UnorderedList>
-          {#each ownedRepos as repo}
+          {#each ownedRepos as repo (repo.id)}
             <ListItem>
               <Anchor
                 href={repo.html_url}
@@ -279,11 +278,11 @@
               <Badge>
                 {repo.language || "Other"}
               </Badge>
-              <Span style={"display: inline-flex;"}>
+              <Span style="display: inline-flex;">
                 <img src={Star} alt="Star" height="12" width="12" />
                 {repo.stargazers_count}
                 {#if repo.homepage}
-                  <Span style={"display: inline-flex; margin-left: 0.5rem;"}>
+                  <Span style="display: inline-flex; margin-left: 0.5rem;">
                     <Anchor
                       href={repo.homepage}
                       target="_blank"
@@ -310,7 +309,7 @@
           href="https://github.com/qlawmarq?tab=repositories"
           target="_blank"
           rel="noopener noreferrer"
-          ariaLabel={"View all my projects on GitHub."}
+          ariaLabel="View all my projects on GitHub."
         >
           <Span>{$LL.viewAllProjects()}</Span>
         </Anchor>
@@ -320,7 +319,7 @@
       <Card>
         <H2><GlitchText text={$LL.projects()} factor={0} /></H2>
         <UnorderedList>
-          {#each starredRepos as repo}
+          {#each starredRepos as repo (repo.id)}
             <ListItem>
               <Anchor
                 href={repo.html_url}
@@ -333,11 +332,11 @@
               <Badge>
                 {repo.language || "Other"}
               </Badge>
-              <Span style={"display: inline-flex;"}>
+              <Span style="display: inline-flex;">
                 <img src={Star} alt="Star" height="12" width="12" />
                 {repo.stargazers_count}
                 {#if repo.homepage}
-                  <Span style={"display: inline-flex; margin-left: 0.5rem;"}>
+                  <Span style="display: inline-flex; margin-left: 0.5rem;">
                     <Anchor
                       href={repo.homepage}
                       target="_blank"

@@ -11,7 +11,7 @@
     <br />
     <Span
       ><Anchor
-        href={"https://github.com/qlawmarq/qlawmarq.github.io"}
+        href="https://github.com/qlawmarq/qlawmarq.github.io"
         target="_blank"
         rel="noopener noreferrer">Check the code on GitHub.</Anchor
       ></Span
