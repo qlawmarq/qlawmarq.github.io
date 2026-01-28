@@ -1,10 +1,16 @@
 <script lang="ts">
-  interface $$Props extends Partial<HTMLAnchorElement> {}
+  import type { Snippet } from "svelte";
+  import type { HTMLAnchorAttributes } from "svelte/elements";
+
+  interface Props extends HTMLAnchorAttributes {
+    children?: Snippet;
+  }
+
+  let { children, ...rest }: Props = $props();
 </script>
 
-<!-- svelte-ignore a11y-missing-attribute -->
-<a {...$$props}>
-  <slot />
+<a {...rest}>
+  {@render children?.()}
 </a>
 
 <style>
@@ -13,7 +19,7 @@
     cursor: pointer;
     transition: all 0.2s ease-out;
   }
-  a :hover {
+  a:hover {
     opacity: 0.7;
   }
 </style>

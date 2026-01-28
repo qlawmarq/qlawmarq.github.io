@@ -1,17 +1,31 @@
 <script lang="ts">
-  export let text: string;
-  export let factor: number = 5;
-  export let delay: number = 0;
-  export let maxMilsec: number = 120;
-  export let minMilsec: number = 20;
-  export let onFinish: () => void = () => {};
-  const randamString = "______!<>-\\/[]{}—=+*^?#";
-  let output = text;
-  let isStarted = false;
-  let counter = -1;
-  $: {
-    if (text?.length) renderGlitchText();
+  interface Props {
+    text: string;
+    factor?: number;
+    delay?: number;
+    maxMilsec?: number;
+    minMilsec?: number;
+    onFinish?: () => void;
   }
+
+  let {
+    text,
+    factor = 5,
+    delay = 0,
+    maxMilsec = 120,
+    minMilsec = 20,
+    onFinish = () => {},
+  }: Props = $props();
+
+  const randamString = "______!<>-\\/[]{}—=+*^?#";
+  // svelte-ignore state_referenced_locally
+  let output = $state(text);
+  let isStarted = $state(false);
+  let counter = $state(-1);
+
+  $effect(() => {
+    if (text?.length) renderGlitchText();
+  });
 
   const renderGlitchText = () => {
     isStarted = true;

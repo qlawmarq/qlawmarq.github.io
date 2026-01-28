@@ -1,9 +1,16 @@
 <script lang="ts">
-  interface $$Props extends svelteHTML.HTMLAttributes<HTMLHeadingElement> {}
+  import type { Snippet } from "svelte";
+  import type { HTMLAttributes } from "svelte/elements";
+
+  interface Props extends HTMLAttributes<HTMLHeadingElement> {
+    children?: Snippet;
+  }
+
+  let { children, ...rest }: Props = $props();
 </script>
 
-<h1 {...$$props}>
-  <slot />
+<h1 {...rest}>
+  {@render children?.()}
 </h1>
 
 <style>

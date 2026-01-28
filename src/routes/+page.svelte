@@ -21,12 +21,12 @@
   const fetchGitHubRepos = async () => {
     let repos = ownedReposJSON as unknown as GitHubRepo[];
     if (process.env.NODE_ENV !== "development") {
-      const url = new URL("https://api.github.com/users/qlawmarq/repos");
-      url.search = new URLSearchParams({
+      const params = new URLSearchParams({
         type: "public",
         sort: "updated",
         per_page: "50",
-      }).toString();
+      });
+      const url = `https://api.github.com/users/qlawmarq/repos?${params}`;
       try {
         const res = await fetch(url);
         const json = res.json();
@@ -54,14 +54,12 @@
       });
   };
 
-  // Fetch own repo datas in GitHub from GitHub API
+  // Fetch starred repo datas in GitHub from GitHub API
   const fetchGithubStaredRepos = async () => {
     let starredRepos = starredReposJSON as unknown as GitHubRepo[];
     if (process.env.NODE_ENV !== "development") {
-      const url = new URL("https://api.github.com/users/qlawmarq/starred");
-      url.search = new URLSearchParams({
-        per_page: "8",
-      }).toString();
+      const params = new URLSearchParams({ per_page: "8" });
+      const url = `https://api.github.com/users/qlawmarq/starred?${params}`;
       try {
         const res = await fetch(url);
         const allRepos = res.json();
@@ -116,12 +114,12 @@
     rssItems = data.rss;
   }
 
-  let ownedRepos: GitHubRepo[] = [];
-  let starredRepos: GitHubRepo[] = [];
-  let rssItems: RSSItem[] = [];
-  let currentLocale = "";
+  let ownedRepos = $state<GitHubRepo[]>([]);
+  let starredRepos = $state<GitHubRepo[]>([]);
+  let rssItems = $state<RSSItem[]>([]);
+  let currentLocale = $state("");
 
-  LL.subscribe(() => {
+  $effect(() => {
     if ($locale !== currentLocale) {
       currentLocale = $locale;
       getAndSetData();
@@ -202,7 +200,7 @@
             href="https://github.com/qlawmarq"
             target="_blank"
             rel="noopener noreferrer"
-            ariaLabel="Check GitHub account"
+            aria-label="Check GitHub account"
           >
             <GlitchText text="GitHub" factor={8} delay={400} />
           </Anchor>
@@ -212,7 +210,7 @@
             href="https://www.linkedin.com/in/qlawmarq/"
             target="_blank"
             rel="noopener noreferrer"
-            ariaLabel="Check LinkdIn account"
+            aria-label="Check LinkdIn account"
           >
             <GlitchText text="LinkdIn" factor={8} delay={600} />
           </Anchor>
@@ -222,13 +220,13 @@
             href={`https://qlawmarq.net/${$locale}/blog`}
             target="_blank"
             rel="noopener noreferrer"
-            ariaLabel="Check Blog"
+            aria-label="Check Blog"
           >
             <GlitchText text="Blog" factor={8} delay={400} />
           </Anchor>
         </ListItem>
         <ListItem>
-          <Anchor href="mailto:masaki.yoshiiwa@gmail.com" ariaLabel="Email">
+          <Anchor href="mailto:masaki.yoshiiwa@gmail.com" aria-label="Email">
             <GlitchText text="Email" factor={8} delay={800} />
           </Anchor>
         </ListItem>
@@ -244,7 +242,7 @@
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                ariaLabel={item.title}
+                aria-label={item.title}
               >
                 <GlitchText
                   text={item.title}
@@ -271,7 +269,7 @@
                 href={repo.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                ariaLabel={repo.name}
+                aria-label={repo.name}
               >
                 {repo.name}
               </Anchor>
@@ -287,7 +285,7 @@
                       href={repo.homepage}
                       target="_blank"
                       rel="noopener noreferrer"
-                      ariaLabel={repo.homepage}
+                      aria-label={repo.homepage}
                     >
                       Homepage
                     </Anchor>
@@ -309,7 +307,7 @@
           href="https://github.com/qlawmarq?tab=repositories"
           target="_blank"
           rel="noopener noreferrer"
-          ariaLabel="View all my projects on GitHub."
+          aria-label="View all my projects on GitHub."
         >
           <Span>{$LL.viewAllProjects()}</Span>
         </Anchor>
@@ -325,7 +323,7 @@
                 href={repo.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                ariaLabel={repo.name}
+                aria-label={repo.name}
               >
                 {repo.name}
               </Anchor>
@@ -341,7 +339,7 @@
                       href={repo.homepage}
                       target="_blank"
                       rel="noopener noreferrer"
-                      ariaLabel={repo.homepage}
+                      aria-label={repo.homepage}
                     >
                       Homepage
                     </Anchor>
@@ -364,7 +362,7 @@
             href="https://github.com/qlawmarq?tab=stars"
             target="_blank"
             rel="noopener noreferrer"
-            ariaLabel={$LL.viewAllProjects()}
+            aria-label={$LL.viewAllProjects()}
           >
             <GlitchText
               text={$LL.viewAllProjects()}

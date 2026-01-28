@@ -1,20 +1,17 @@
 <script lang="ts">
-  interface ExtendedHTMLSelectElement extends Omit<
-    HTMLSelectElement,
-    "options"
-  > {
+  import type { HTMLSelectAttributes } from "svelte/elements";
+
+  interface Props extends Omit<HTMLSelectAttributes, "value"> {
     options: { text: string; value: string }[];
+    value?: string;
+    onchange?: (e: Event) => void;
   }
-  interface $$Props extends Partial<ExtendedHTMLSelectElement> {}
+
+  let { options, value, onchange, ...rest }: Props = $props();
 </script>
 
-<select
-  value={$$props.value}
-  aria-label={$$props.ariaLabel}
-  {...$$props}
-  on:change={(e) => $$props.onchange(e)}
->
-  {#each $$props.options as option (option.value)}
+<select {value} {...rest} {onchange}>
+  {#each options as option (option.value)}
     <option value={option.value}>{option.text}</option>
   {/each}
 </select>

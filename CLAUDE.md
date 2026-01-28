@@ -23,28 +23,33 @@ pnpm typesafe-i18n    # Regenerate i18n types after modifying translations
 ## Architecture
 
 ### Data Flow
+
 - **Development**: Uses cached JSON files in `src/lib/json/` (ownedRepos.json, starredRepos.json)
 - **Production**: Fetches live data from GitHub API and RSS feed (`https://qlawmarq.net/{lang}/blog/rss`)
 - Environment detection via `process.env.NODE_ENV`
 
 ### Key Components
+
 - `GlitchText.svelte`: Animated text with character-by-character glitch effect
 - `Card.svelte`: Retro-styled cards with slide-in animation
 - `Header.svelte`: Logo and language selector
 - `+page.svelte`: Main page fetching GitHub repos, starred repos, and blog posts
 
 ### Internationalization (typesafe-i18n)
+
 - Locales: `en` (base), `ja`
 - Translation files: `src/i18n/{locale}/index.ts`
 - Svelte stores: `locale` (current locale), `LL` (translation functions), `setLocale()` (change locale)
 - After modifying translations, run `pnpm typesafe-i18n` to regenerate types
 
 ### Static Site Generation
+
 - All pages prerendered via `adapter-static`
 - Prerender enabled in `+layout.ts` and `+page.ts` with `export const prerender = true`
 - Output directory: `build/`
 
 ## Tech Stack
+
 - **Framework**: SvelteKit v2 with Svelte v4
 - **Build**: Vite
 - **Package Manager**: pnpm (engine-strict, requires Node v24)

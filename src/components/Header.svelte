@@ -17,13 +17,13 @@
 
 <header>
   <div class="header__main">
-    <div />
-    <div class="header__logo" />
+    <div></div>
+    <div class="header__logo"></div>
     <div>
       <Select
         id="locale"
         name="locale"
-        ariaLabel="Select locale"
+        aria-label="Select locale"
         options={localeOptions}
         value={$locale}
         onchange={(e) => onChange(e)}

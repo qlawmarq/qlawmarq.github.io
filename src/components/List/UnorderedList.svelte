@@ -1,9 +1,16 @@
 <script lang="ts">
-  interface $$Props extends svelteHTML.HTMLAttributes<HTMLUListElement> {}
+  import type { Snippet } from "svelte";
+  import type { HTMLAttributes } from "svelte/elements";
+
+  interface Props extends HTMLAttributes<HTMLUListElement> {
+    children?: Snippet;
+  }
+
+  let { children, ...rest }: Props = $props();
 </script>
 
-<ul {...$$props}>
-  <slot />
+<ul {...rest}>
+  {@render children?.()}
 </ul>
 
 <style>
