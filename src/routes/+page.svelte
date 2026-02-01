@@ -24,7 +24,7 @@
       const url = `https://api.github.com/users/qlawmarq/repos?${params}`;
       try {
         const res = await fetch(url);
-        const json = res.json();
+        const json = await res.json();
         repos = json as unknown as GitHubRepo[];
       } catch (error) {
         console.warn(error);
@@ -57,7 +57,7 @@
       const url = `https://api.github.com/users/qlawmarq/starred?${params}`;
       try {
         const res = await fetch(url);
-        const allRepos = res.json();
+        const allRepos = await res.json();
         starredRepos = allRepos as unknown as GitHubRepo[];
       } catch (error) {
         console.warn(error);
@@ -151,7 +151,7 @@
   $effect(() => {
     if ($locale !== currentLocale) {
       currentLocale = $locale;
-      getAndSetData();
+      void getAndSetData();
     }
   });
 </script>
