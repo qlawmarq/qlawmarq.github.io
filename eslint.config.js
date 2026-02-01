@@ -18,6 +18,17 @@ export default [
     },
   },
   {
+    files: ["**/*.ts"],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-floating-promises": "error",
+    },
+  },
+  {
     files: ["**/*.svelte"],
     languageOptions: {
       globals: {
@@ -26,6 +37,8 @@ export default [
       },
       parserOptions: {
         parser: tseslint.parser,
+        projectService: true,
+        extraFileExtensions: [".svelte"],
       },
     },
     rules: {
@@ -40,6 +53,7 @@ export default [
       "@typescript-eslint/no-empty-object-type": "off",
       // Disable for external links (this is a static site with no SvelteKit routing)
       "svelte/no-navigation-without-resolve": "off",
+      "@typescript-eslint/no-floating-promises": "error",
     },
   },
   {
