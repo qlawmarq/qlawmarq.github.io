@@ -24,21 +24,9 @@ type RootTranslation = {
    */
   name: string;
   /**
-   * S​o​f​t​w​a​r​e​ ​d​e​v​e​l​o​p​e​r​,​ ​f​u​l​l​ ​s​t​a​c​k​ ​d​e​v​e​l​o​p​e​r​,​ ​w​o​r​k​i​n​g​ ​p​r​i​m​a​r​i​l​y​ ​o​n​ ​w​e​b​ ​a​n​d​ ​m​o​b​i​l​e​ ​a​p​p​s​.
-   */
-  job: string;
-  /**
-   * P​a​s​s​i​o​n​a​t​e​ ​a​b​o​u​t​ ​s​o​l​v​i​n​g​ ​i​n​t​e​r​e​s​t​i​n​g​ ​p​r​o​b​l​e​m​s​ ​a​n​d​ ​f​i​n​d​i​n​g​ ​n​e​w​ ​t​e​c​h​n​o​l​o​g​i​e​s​.​ ​L​o​v​e​s​ ​a​u​t​o​m​a​t​i​o​n​,​ ​d​e​s​i​g​n​,​ ​a​n​d​ ​w​r​i​t​i​n​g​ ​c​o​d​e​.
-   */
-  introduce: string;
-  /**
    * A​b​o​u​t
    */
   about: string;
-  /**
-   * C​o​n​t​a​c​t
-   */
-  contact: string;
   /**
    * M​y​ ​P​r​o​j​e​c​t​s
    */
@@ -67,21 +55,9 @@ export type TranslationFunctions = {
    */
   name: () => LocalizedString;
   /**
-   * Software developer, full stack developer, working primarily on web and mobile apps.
-   */
-  job: () => LocalizedString;
-  /**
-   * Passionate about solving interesting problems and finding new technologies. Loves automation, design, and writing code.
-   */
-  introduce: () => LocalizedString;
-  /**
    * About
    */
   about: () => LocalizedString;
-  /**
-   * Contact
-   */
-  contact: () => LocalizedString;
   /**
    * My Projects
    */
