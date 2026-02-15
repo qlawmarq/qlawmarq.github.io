@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte';
+  import type { Snippet } from "svelte";
   import Header from "../components/Header.svelte";
   import Footer from "../components/Footer.svelte";
   import "./reset.css";
