@@ -130,12 +130,16 @@
     };
   }
 
+  let fetchVersion = 0;
+
   async function getAndSetData() {
+    const version = ++fetchVersion;
     ownedRepos = [];
     starredRepos = [];
     rssItems = [];
     aboutContent = null;
     const data = await fetchData();
+    if (version !== fetchVersion) return;
     ownedRepos = data.githubRepo;
     starredRepos = data.githubStaredRepo;
     rssItems = data.rss;
