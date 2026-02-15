@@ -1,5 +1,9 @@
+<script>
+  let { children } = $props();
+</script>
+
 <span class="badge">
-  <slot />
+  {@render children?.()}
 </span>
 
 <style>

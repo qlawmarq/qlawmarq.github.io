@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte';
   import Header from "../components/Header.svelte";
   import Footer from "../components/Footer.svelte";
   import "./reset.css";
@@ -8,6 +9,8 @@
   import { detectLocale } from "../i18n/i18n-util";
   import { loadAllLocales } from "../i18n/i18n-util.sync";
   import { navigatorDetector } from "typesafe-i18n/detectors";
+
+  let { children }: { children: Snippet } = $props();
 
   loadAllLocales();
 
@@ -28,7 +31,7 @@
 <div class="app">
   <Header />
   <main>
-    <slot />
+    {@render children?.()}
   </main>
   <Footer />
   <div class="up_left_image"></div>
