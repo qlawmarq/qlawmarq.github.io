@@ -22,30 +22,32 @@
   let output = $state(text);
   let isStarted = $state(false);
   let counter = $state(-1);
+  let animationId = 0;
 
   $effect(() => {
-    if (text?.length) renderGlitchText();
+    if (text?.length) {
+      const currentId = ++animationId;
+      isStarted = true;
+      counter = -1;
+      output = "";
+      setTimeout(() => {
+        if (currentId !== animationId) return;
+        for (let i = 0; i < text.length + factor; i++) {
+          output += getRandamString();
+        }
+        glitch(currentId);
+      }, delay || 0);
+    }
   });
-
-  const renderGlitchText = () => {
-    isStarted = true;
-    output = "";
-    delay = delay ? delay : 0;
-    setTimeout(() => {
-      for (let i = 0; i < text.length + factor; i++) {
-        output += getRandamString();
-      }
-      glitch();
-    }, delay);
-  };
 
   const getRandamString = () => {
     return randamString.charAt(Math.floor(Math.random() * randamString.length));
   };
 
-  const glitch = () => {
+  const glitch = (id: number) => {
     setTimeout(
       () => {
+        if (id !== animationId) return;
         counter++;
         if (counter < text.length) {
           const cipherChars = [...output];
@@ -60,7 +62,7 @@
           }
           cipherChars[counter] = text[counter];
           output = cipherChars.join("");
-          glitch();
+          glitch(id);
         }
       },
       Math.floor(Math.random() * (maxMilsec - minMilsec) + minMilsec),

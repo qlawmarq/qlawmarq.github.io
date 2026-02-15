@@ -3,25 +3,24 @@
   import Footer from "../components/Footer.svelte";
   import "./reset.css";
   import "./layout.css";
-  import { onMount } from "svelte";
-  import { setLocale } from "../i18n/i18n-svelte";
-  import { isLocale } from "../i18n/i18n-util";
+  import { browser } from "$app/environment";
+  import { locale, setLocale } from "../i18n/i18n-svelte";
+  import { detectLocale } from "../i18n/i18n-util";
   import { loadAllLocales } from "../i18n/i18n-util.sync";
-  setLocale("en");
+  import { navigatorDetector } from "typesafe-i18n/detectors";
+
   loadAllLocales();
 
-  const getLocaleFromBrowser = () => {
-    if (navigator.languages != undefined) return navigator.languages[0];
-    return navigator.language;
-  };
+  if (browser) {
+    const detectedLocale = detectLocale(navigatorDetector);
+    setLocale(detectedLocale);
+  } else {
+    setLocale("en");
+  }
 
-  onMount(() => {
-    const detectedLocale = getLocaleFromBrowser();
-    if (isLocale(detectedLocale)) {
-      setLocale(detectedLocale);
-      document.querySelector("html")!.setAttribute("lang", detectedLocale);
-    } else {
-      setLocale("en");
+  $effect(() => {
+    if (browser) {
+      document.documentElement.lang = $locale;
     }
   });
 </script>
