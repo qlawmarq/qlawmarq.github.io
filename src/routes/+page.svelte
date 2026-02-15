@@ -174,12 +174,12 @@
     property="og:description"
     content="GitHub Profile Page of Masaki Yoshiiwa, software engineer, web developer, and mobile app developer."
   />
-  <meta property="og:image" content="https://qlawmarq.github.io/icon.png" />
+  <meta property="og:image" content="https://qlawmarq.github.io/logo.png" />
 </svelte:head>
 
 <section role="main">
   <h1>
-    <GlitchText text={$LL.hello()} factor={2} minMilsec={55} />
+    <GlitchText text={$LL.hello()} factor={4} minMilsec={55} />
   </h1>
 
   {#key $locale}

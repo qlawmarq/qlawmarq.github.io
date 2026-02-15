@@ -20,7 +20,7 @@
     "e2e:update": "playwright test -u",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "lint": "prettier --plugin prettier-plugin-svelte --check . && eslint --fix ./src",
+    "lint": "prettier --plugin prettier-plugin-svelte --write . && eslint --fix ./src",
     "format": "prettier --plugin prettier-plugin-svelte --write .",
     "typesafe-i18n": "typesafe-i18n"
   },
