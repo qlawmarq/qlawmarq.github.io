@@ -25,7 +25,7 @@
     "typesafe-i18n": "typesafe-i18n"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
+    "@eslint/js": "^9.39.3",
     "@fontsource/fira-mono": "^5.2.7",
     "@neoconfetti/svelte": "^2.2.2",
     "@playwright/test": "^1.58.0",
