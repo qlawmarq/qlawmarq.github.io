@@ -38,7 +38,7 @@
     "@typescript-eslint/parser": "^8.54.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-svelte": "^3.14.0",
+    "eslint-plugin-svelte": "^3.15.0",
     "fast-xml-parser": "^5.3.4",
     "fs": "0.0.1-security",
     "globals": "^17.2.0",
