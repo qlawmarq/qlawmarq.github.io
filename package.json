@@ -56,7 +56,7 @@
   },
   "type": "module",
   "dependencies": {
-    "isomorphic-dompurify": "^2.35.0",
+    "isomorphic-dompurify": "^3.7.1",
     "marked": "^17.0.1"
   }
 }
