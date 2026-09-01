@@ -44,7 +44,7 @@
     "globals": "^17.5.0",
     "isbot": "^5.1.44",
     "path": "^0.12.7",
-    "prettier": "^3.8.1",
+    "prettier": "^3.9.4",
     "prettier-plugin-svelte": "^3.4.1",
     "svelte": "^5.48.5",
     "svelte-check": "^4.4.6",
