@@ -42,7 +42,7 @@
     "fast-xml-parser": "^5.5.9",
     "fs": "0.0.1-security",
     "globals": "^17.5.0",
-    "isbot": "^5.1.40",
+    "isbot": "^5.1.44",
     "path": "^0.12.7",
     "prettier": "^3.8.1",
     "prettier-plugin-svelte": "^3.4.1",
