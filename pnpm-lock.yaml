@@ -67,8 +67,8 @@ importers:
         specifier: ^17.5.0
         version: 17.5.0
       isbot:
-        specifier: ^5.1.44
-        version: 5.1.44
+        specifier: ^5.2.2
+        version: 5.2.2
       path:
         specifier: ^0.12.7
         version: 0.12.7
@@ -1087,8 +1087,8 @@ packages:
   is-reference@3.0.3:
     resolution: {integrity: sha512-ixkJoqQvAP88E6wLydLGGqCJsrFUnqoH6HnaczB8XmDH1oaWU+xxdptvikTgaEhtZ53Ky6YXiBuUI2WXLMCwjw==}
 
-  isbot@5.1.44:
-    resolution: {integrity: sha512-PGEHtwMnKbZpeSEXW2Utx+/JWed7dp6DiH0WWg33vGSDA7RUvpUeJSVlLrVkQ1RCpvDOUc/eH9ql7VsdbBZ8pA==}
+  isbot@5.2.2:
+    resolution: {integrity: sha512-iQcBXcd+Rv/pkubRyGh2utW2j1oPG5hZY6TUhVPpqK4G+o3IbxpJNx04hgksjc/N7GK5pEorUxDeg31cFgEk/w==}
     engines: {node: '>=18'}
 
   isexe@2.0.0:
@@ -2494,7 +2494,7 @@ snapshots:
     dependencies:
       '@types/estree': 1.0.8
 
-  isbot@5.1.44: {}
+  isbot@5.2.2: {}
 
   isexe@2.0.0: {}
 
